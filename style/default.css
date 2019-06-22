@@ -44,6 +44,27 @@ h2 {
 	font-style: italic;
 }
 
+h3 {
+	margin-bottom: -.5em;
+
+	font-size: 1.25em;
+	text-decoration: underline solid #e81a53;
+}
+
+blockquote {
+	text-align: center;
+	font-style: italic;
+}
+
+img {
+	display: block;
+	width: 100%;
+	max-height: 450px;
+	object-fit: contain;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 a { 
 	background: linear-gradient(-90deg, #e81a53 0%, #e81a53 0%);
 	background-size: 0% 100%;

@@ -34,3 +34,4 @@ title: tesselode
 
 ## thoughts
 - [game design manifesto](thoughts/manifesto)
+- [colossus design doc](thoughts/colossus)
