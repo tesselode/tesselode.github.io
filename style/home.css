@@ -1,0 +1,12 @@
+body {
+	font-style: italic;
+}
+
+ul {
+	list-style: none;
+}
+
+a {
+	padding-left: .5em;
+	padding-right: .5em;
+}
