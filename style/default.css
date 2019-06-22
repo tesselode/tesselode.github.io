@@ -1,6 +1,6 @@
 body {
 	width: 100%;
-	max-width: 800px;
+	max-width: 750px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 2em;
@@ -16,7 +16,9 @@ body {
 
 h1 {
 	display: block;
-	width: 100%;
+	width: 105%;
+	margin-left: -5%;
+	padding-left: 5%;
 
 	border-bottom: 4px solid #e81a53;
 
@@ -26,11 +28,13 @@ h1 {
 }
 
 h2 {
+	width: 105%;
+	margin-left: -5%;
+	padding-left: 5%;
 	margin-bottom: -.166666667em;
 	margin-top: 1.5em;
 	padding-top: .3333333333em;
 	padding-bottom: 1px;
-	padding-left: .45em;	
 
 	background: #e81a53;
 
