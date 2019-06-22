@@ -1,13 +1,33 @@
 ---
 layout: page
+title: tesselode
 ---
 
-Odit consectetur eum iusto ad quis qui vitae modi. Dicta aspernatur vitae ipsum amet et qui cupiditate. Modi cumque non soluta consequatur repellendus quod magnam eveniet.
+# me on the web
+- [bandcamp](https://tesselode.bandcamp.com/)
+- [itch](https://tesselode.itch.io/)
+- [github](https://github.com/tesselode)
+- [youtube](https://www.youtube.com/channel/UCu-Z3vUb-IiVid_l2BWMxTw)
+- [twitter](https://twitter.com/tesselode)
 
-Et qui iure doloremque nihil nam accusamus modi eos. Quia est aspernatur quasi dolor consequatur sit. Non ut exercitationem nisi delectus ab explicabo odit. Qui nisi qui quam unde est est sed. Sit et quis quas veniam a. Sint quod delectus accusamus suscipit est et.
+# music
+- [beginner spellbook](https://tesselode.bandcamp.com/album/beginner-spellbook)
+- [make magic](https://tesselode.bandcamp.com/album/make-magic)
+- [another home](https://tesselode.bandcamp.com/album/another-home)
+- [sharp lines](https://tesselode.bandcamp.com/album/sharp-lines)
 
-Molestiae occaecati quia ut quod at vel. A facere quia illo. Quaerat possimus consectetur facilis corporis expedita et. Qui saepe ex ab quibusdam dolor quidem veritatis enim.
+# games
+- [web pilot](https://tesselode.itch.io/web-pilot) - tempest-inspired tube shooter for pico-8
+- [netty](https://tesselode.itch.io/netty) - strategic kinetic action videogame
+- [the tops don't sting you](https://tesselode.itch.io/the-tops-dont-sting-you) - cute swimming platformer
 
-Quas et maxime placeat sapiente. Voluptas qui commodi enim expedita voluptatibus. Eveniet illum consequatur ratione et nihil. Non nostrum id perspiciatis sequi. Pariatur magni dolores labore reiciendis. Praesentium voluptas rerum non ducimus qui porro saepe.
+# audio plugins
+- [mika micro](https://tesselode.itch.io/mika-micro) - simple, expressive subtractive synth
+- [cocoa delay](https://tesselode.itch.io/cocoa-delay) - wiggly, cozy delay
+- [flutterbird](https://tesselode.itch.io/flutterbird) - easy pitch and volume fluctuation
 
-Cum perferendis ratione aut. Ratione voluptatem est modi quia. Et ut nobis dolores dolorem ipsam officiis corrupti iste.
+# libraries for löve
+- [baton](https://github.com/tesselode/baton) - quick and seamless keyboard/gamepad input
+- [cartographer](https://github.com/tesselode/cartographer) - simple tiled map loading and drawing
+- [ripple](https://github.com/tesselode/ripple) - audio manager with tagging support
+- [nata](https://github.com/tesselode/nata) - entity management with optional ECS support
