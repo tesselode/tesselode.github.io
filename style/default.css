@@ -16,9 +16,9 @@ body {
 
 h1 {
 	display: block;
-	width: 105%;
-	margin-left: -5%;
-	padding-left: 5%;
+	width: 103.5%;
+	margin-left: -3.5%;
+	padding-left: 3.5%;
 
 	border-bottom: 4px solid #e81a53;
 
@@ -28,9 +28,9 @@ h1 {
 }
 
 h2 {
-	width: 105%;
-	margin-left: -5%;
-	padding-left: 5%;
+	width: 103.5%;
+	margin-left: -3.5%;
+	padding-left: 3.5%;
 	margin-bottom: -.166666667em;
 	margin-top: 1.5em;
 	padding-top: .3333333333em;
