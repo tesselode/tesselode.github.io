@@ -3,12 +3,15 @@ body {
 }
 
 ul {
+	padding-left: 0;
 	list-style: none;
-	padding-left: 3.5%;
-	margin-left: -.5em;
 }
 
-a {
-	padding-left: .5em;
-	padding-right: .5em;
+td > a {
+	display: inline-block;
+	width: 100%;
+}
+
+thead {
+	display: none;
 }

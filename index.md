@@ -11,26 +11,50 @@ title: tesselode
 - [twitter](https://twitter.com/tesselode)
 
 ## music
-- [beginner spellbook](https://tesselode.bandcamp.com/album/beginner-spellbook)
-- [make magic](https://tesselode.bandcamp.com/album/make-magic)
-- [another home](https://tesselode.bandcamp.com/album/another-home)
-- [sharp lines](https://tesselode.bandcamp.com/album/sharp-lines)
+[![beginner spellbook album art](https://f4.bcbits.com/img/a1989563985_10.jpg)](https://tesselode.bandcamp.com/album/beginner-spellbook)
+
+|                                                                               |                          |
+| :---------------------------------------------------------------------------- | -----------------------: |
+| [beginner spellbook](https://tesselode.bandcamp.com/album/beginner-spellbook) |         witch-themed IDM |
+| [make magic](https://tesselode.bandcamp.com/album/make-magic)                 | cozy electronic melodies |
+| [another home](https://tesselode.bandcamp.com/album/another-home)             |        dream atmospheres |
+| [sharp lines](https://tesselode.bandcamp.com/album/sharp-lines)               |    samples mario kart 64 |
 
 ## games
-- [web pilot](https://tesselode.itch.io/web-pilot)- &nbsp;tempest-inspired tube shooter for pico-8
-- [netty](https://tesselode.itch.io/netty)- &nbsp;strategic kinetic action videogame
-- [the tops don't sting you](https://tesselode.itch.io/the-tops-dont-sting-you)- &nbsp;cute swimming platformer
+[![tera: mind over matter gif](https://www.lexaloffle.com/bbs/files/10162/3.gif)](https://www.lexaloffle.com/bbs/?tid=33170)
+
+|                                                                               |                                          |
+| :---------------------------------------------------------------------------- | ---------------------------------------: |
+| [tera: mind over matter](https://www.lexaloffle.com/bbs/?tid=33170)           |              difficult tetris for pico-8 |
+| [web pilot](https://tesselode.itch.io/web-pilot)                              | tempest-inspired tube shooter for pico-8 |
+| [netty](https://tesselode.itch.io/netty)                                      |       strategic kinetic action videogame |
+| [the tops don't sting you](https://tesselode.itch.io/the-tops-dont-sting-you) |                 cute swimming platformer |
 
 ## audio plugins
-- [mika micro](https://tesselode.itch.io/mika-micro)- &nbsp;simple, expressive subtractive synth
-- [cocoa delay](https://tesselode.itch.io/cocoa-delay)- &nbsp;wiggly, cozy delay
-- [flutterbird](https://tesselode.itch.io/flutterbird)- &nbsp;easy pitch and volume fluctuation
+[![mika micro screenshot](https://raw.githubusercontent.com/tesselode/mika-micro/master/images/screenshot.png)](https://tesselode.itch.io/mika-micro)
+
+|                                                      |                                      |
+| :--------------------------------------------------- | -----------------------------------: |
+| [mika micro](https://tesselode.itch.io/mika-micro)   | simple, expressive subtractive synth |
+| [cocoa delay](https://tesselode.itch.io/cocoa-delay) |                   wiggly, cozy delay |
+| [flutterbird](https://tesselode.itch.io/flutterbird) |    easy pitch and volume fluctuation |
 
 ## libraries for löve
-- [baton](https://github.com/tesselode/baton)- &nbsp;quick and seamless keyboard/gamepad input
-- [cartographer](https://github.com/tesselode/cartographer)- &nbsp;simple tiled map loading and drawing
-- [ripple](https://github.com/tesselode/ripple)- &nbsp;audio manager with tagging support
-- [nata](https://github.com/tesselode/nata)- &nbsp;entity management with optional ECS support
+<div class='spacing'></div>
+
+|                                                           |                                             |
+| :-------------------------------------------------------- | ------------------------------------------: |
+| [baton](https://github.com/tesselode/baton)               |   quick and seamless keyboard/gamepad input |
+| [cartographer](https://github.com/tesselode/cartographer) |        simple tiled map loading and drawing |
+| [ripple](https://github.com/tesselode/ripple)             |          audio manager with tagging support |
+| [nata](https://github.com/tesselode/nata)                 | entity management with optional ECS support |
+
+## collaborations
+[![qur'analytics screenshot](images/quranalytics.png)](http://quranalytics.org/)
+
+|                                           |                                      |
+| :---------------------------------------- | -----------------------------------: |
+| [qur'analytics](http://quranalytics.org/) | UI refresh design and implementation |
 
 ## thoughts
 - [game design manifesto](thoughts/manifesto)
