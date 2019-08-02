@@ -7,11 +7,28 @@ ul {
 	list-style: none;
 }
 
-td > a {
-	display: inline-block;
+.showcase {
+	margin-top: 1em;
+}
+
+.showcase td {
+	width: 50%;
+	height: 325px;
+	padding: .25em;
+}
+
+.showcase img {
 	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 thead {
 	display: none;
+}
+
+@media screen and (max-width: 500px) {
+	.showcase td {
+		height: 150px;
+	}
 }

@@ -11,7 +11,12 @@ title: tesselode
 - [twitter](https://twitter.com/tesselode)
 
 ## music
-[![beginner spellbook album art](https://f4.bcbits.com/img/a1989563985_10.jpg)](https://tesselode.bandcamp.com/album/beginner-spellbook)
+<table class='showcase'>
+	<tr>
+		<td><a href='https://tesselode.bandcamp.com/album/beginner-spellbook'><img src='https://f4.bcbits.com/img/a1989563985_10.jpg' alt='beginner spellbook album art'></a></td>
+		<td><a href='https://tesselode.bandcamp.com/album/make-magic'><img src='https://f4.bcbits.com/img/a0321053301_10.jpg' alt='make magic album art'></a></td>
+	</tr>
+</table>
 
 |                                                                               |                          |
 | :---------------------------------------------------------------------------- | -----------------------: |
@@ -21,7 +26,13 @@ title: tesselode
 | [sharp lines](https://tesselode.bandcamp.com/album/sharp-lines)               |    samples mario kart 64 |
 
 ## games
-[![tera: mind over matter gif](https://www.lexaloffle.com/bbs/files/10162/3.gif)](https://www.lexaloffle.com/bbs/?tid=33170)
+
+<table class='showcase'>
+	<tr>
+		<td><a href='https://www.lexaloffle.com/bbs/?tid=33170'><img src='https://www.lexaloffle.com/bbs/files/10162/3.gif' alt='tera: mind over matter gif'></a></td>
+		<td><a href='https://tesselode.itch.io/the-tops-dont-sting-you' alt="the tops don't sting you gif"><img src='https://img.itch.zone/aW1hZ2UvMzA3MDcvMTMyMDgxLmdpZg==/original/gzy1vP.gif'></a></td>
+	</tr>
+</table>
 
 |                                                                               |                                          |
 | :---------------------------------------------------------------------------- | ---------------------------------------: |
