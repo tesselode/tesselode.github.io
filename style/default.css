@@ -84,7 +84,8 @@ a > img:hover {
 .showcase td {
 	width: 50%;
 	height: 15em;
-	padding: .25em;
+	padding-left: .25em;
+	padding-right: .25em;
 }
 
 .showcase img {
