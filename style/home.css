@@ -23,8 +23,12 @@ ul {
 	object-fit: cover;
 }
 
-thead {
-	display: none;
+.portfolio-items > tbody > tr > td:nth-of-type(odd) {
+	text-align: left;
+}
+
+.portfolio-items > tbody > tr > td:nth-of-type(even) {
+	text-align: right;
 }
 
 @media screen and (max-width: 500px) {
