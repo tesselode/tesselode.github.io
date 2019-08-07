@@ -1,38 +1,4 @@
-body {
-	font-style: italic;
-}
-
 ul {
+	list-style-type: none;
 	padding-left: 0;
-	list-style: none;
-}
-
-.showcase {
-	margin-top: 1em;
-}
-
-.showcase td {
-	width: 50%;
-	height: 325px;
-	padding: .25em;
-}
-
-.showcase img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.portfolio-items > tbody > tr > td:nth-of-type(odd) {
-	text-align: left;
-}
-
-.portfolio-items > tbody > tr > td:nth-of-type(even) {
-	text-align: right;
-}
-
-@media screen and (max-width: 500px) {
-	.showcase td {
-		height: 150px;
-	}
 }
