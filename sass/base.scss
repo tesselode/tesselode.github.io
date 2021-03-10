@@ -1,0 +1,16 @@
+@import 'vars';
+
+body {
+	background: $bg-color;
+	color: $fg-color;
+	font-family: 'Karla', sans-serif;
+	font-size: 1.5em;
+	line-height: 1.375;
+}
+
+.content {
+	width: 80%;
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
