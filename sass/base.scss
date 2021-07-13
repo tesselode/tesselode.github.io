@@ -1,0 +1,45 @@
+:root {
+	--bg-color: #111;
+	--fg-color: #eee;
+	--accent-color: #e81a53;
+}
+
+body {
+	width: 100%;
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	background: var(--bg-color);
+	color: var(--fg-color);
+	font-family: 'Karla', sans-serif;
+	font-size: 1.5em;
+}
+
+a {
+	position: relative;
+	color: var(--accent-color);
+	text-decoration: none;
+	transition: color 0.1s;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		right: 0;
+		top: 0;
+		width: 0;
+		height: 100%;
+		background: var(--accent-color);
+		transition: width 0.2s;
+	}
+
+	&:hover {
+		color: var(--bg-color);
+		transition: color 0.1s 0.1s;
+
+		&::before {
+			left: 0;
+			width: 100%;
+		}
+	}
+}

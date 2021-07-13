@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% for subsection_path in section.subsections %}
+		{% set subsection = get_section(path=subsection_path) %}
+		<h2>{{ subsection.title }}</h2>
+		{% for page in subsection.pages %}
+			<h3>{{ page.title }}</h3>
+			{% if page.extra.links %}
+				<div class="links">
+					{% for link in page.extra.links %}
+						<a href="{{ link.url }}">{{ link.label }}</a>
+						{% if not loop.last %}
+							<span class="separator">|</span>
+						{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}
+			{{ page.content | safe }}
+		{% endfor %}
+	{% endfor %}
+{% endblock content %}
