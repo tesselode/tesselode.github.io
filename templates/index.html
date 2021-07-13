@@ -6,6 +6,18 @@
 		<h2>{{ subsection.title }}</h2>
 		{% for page in subsection.pages %}
 			<h3>{{ page.title }}</h3>
+			{% if page.extra.screenshots %}
+				<div class="screenshots">
+					{% if page.extra.screenshots[0] %}
+						<img src="{{ page.extra.screenshots[0] }}" alt="{{ page.title }} screenshot 1">
+					{% endif %}
+					<div class="secondary-screenshots">
+						{% for screenshot_url in page.extra.screenshots | slice(start=1) %}
+							<img src="{{ screenshot_url }}" alt="{{ page.title }} screenshot {{ loop.index + 1 }}">
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
 			{% if page.extra.links %}
 				<div class="links">
 					{% for link in page.extra.links %}

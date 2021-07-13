@@ -2,6 +2,11 @@
 title = "EAT GIRL"
 
 [extra]
+screenshots = [
+	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1MjguZ2lm/250x600/4eFbkb.gif",
+	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1MzAuZ2lm/250x600/iYIGmn.gif",
+	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1NDIuZ2lm/250x600/GyyhMA.gif",
+]
 links = [
 	{ label = "itch.io", url = "https://tesselode.itch.io/eatgirl" },
 	{ label = "test", url = "https://tesselode.itch.io/eatgirl" },
