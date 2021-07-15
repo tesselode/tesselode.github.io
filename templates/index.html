@@ -6,16 +6,20 @@
 		<h2>{{ subsection.title }}</h2>
 		{% for page in subsection.pages %}
 			<h3>{{ page.title }}</h3>
-			{% if page.extra.screenshots %}
+			{% if page.extra.primary_screenshot or page.extra.secondary_screenshots %}
 				<div class="screenshots">
-					{% if page.extra.screenshots[0] %}
-						<img src="{{ page.extra.screenshots[0] }}" alt="{{ page.title }} screenshot 1">
+					{% if page.extra.primary_screenshot %}
+						<div class="primary-screenshot">
+							<img src="{{ page.extra.primary_screenshot }}" alt="{{ page.title }} screenshot 1">
+						</div>
 					{% endif %}
-					<div class="secondary-screenshots">
-						{% for screenshot_url in page.extra.screenshots | slice(start=1) %}
-							<img src="{{ screenshot_url }}" alt="{{ page.title }} screenshot {{ loop.index + 1 }}">
-						{% endfor %}
-					</div>
+					{% if page.extra.secondary_screenshots %}
+						<div class="secondary-screenshots">
+							{% for screenshot_url in page.extra.secondary_screenshots %}
+								<img src="{{ screenshot_url }}" alt="{{ page.title }} screenshot {{ loop.index + 1 }}">
+							{% endfor %}
+						</div>
+					{% endif %}
 				</div>
 			{% endif %}
 			{% if page.extra.links %}
