@@ -1,10 +1,11 @@
 +++
 title = "Kira"
+date = 2020-11-18
 
 [extra]
 links = [
 	{ label = "crates.io", url = "https://crates.io/crates/kira" },
-	{ label = "docs", url = "https://docs.rs/kira/0.5.3/kira/" },
+	{ label = "docs", url = "https://docs.rs/kira/" },
 	{ label = "GitHub", url = "https://github.com/tesselode/kira" },
 ]
 +++

@@ -1,5 +1,6 @@
 +++
 title = "Make Magic"
+date = 2017-12-17
 
 [extra]
 url = "https://tesselode.bandcamp.com/album/make-magic"

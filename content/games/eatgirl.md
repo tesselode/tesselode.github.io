@@ -1,5 +1,6 @@
 +++
 title = "EAT GIRL"
+date = 2019-09-21
 
 [extra]
 primary_screenshot = "https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1MjguZ2lm/250x600/4eFbkb.gif"
