@@ -6,7 +6,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1em;
+		padding: 0.75em;
 		background: #33333300;
 		cursor: pointer;
 
@@ -25,11 +25,11 @@
 		transition: max-height 0.25s;
 
 		.collapse-content {
-			padding-bottom: 1em;
+			padding-bottom: 0.75em;
 	
 			.collapse-text {
-				padding-left: 1em;
-				padding-right: 1em;
+				padding-left: 0.75em;
+				padding-right: 0.75em;
 			}
 	
 			p:nth-last-child(1) {
