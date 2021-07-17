@@ -1,3 +1,5 @@
+{% import "macros/section_displays.html" as section_displays %}
+
 {% extends "base.html" %}
 
 {% block head %}
@@ -5,49 +7,6 @@
 {% endblock head %}
 
 {% block content %}
-	{% for subsection_path in section.subsections %}
-		{% set subsection = get_section(path=subsection_path) %}
-		<h2>{{ subsection.title }}</h2>
-		{% for page in subsection.pages %}
-			<div class="collapse">
-				<div class="collapse-header">
-					<h3>{{ page.title }}</h3>
-					<i class="fas fa-angle-down"></i>
-				</div>
-				<div class="collapse-content-wrapper">
-					<div class="collapse-content">
-						{% if page.extra.primary_screenshot or page.extra.secondary_screenshots %}
-							<div class="screenshots">
-								{% if page.extra.primary_screenshot %}
-									<div class="primary-screenshot">
-										<img src="{{ page.extra.primary_screenshot }}" alt="{{ page.title }} screenshot 1">
-									</div>
-								{% endif %}
-								{% if page.extra.secondary_screenshots %}
-									<div class="secondary-screenshots">
-										{% for screenshot_url in page.extra.secondary_screenshots %}
-											<img src="{{ screenshot_url }}" alt="{{ page.title }} screenshot {{ loop.index + 1 }}">
-										{% endfor %}
-									</div>
-								{% endif %}
-							</div>
-						{% endif %}
-						<div class="collapse-text">
-							{% if page.extra.links %}
-								<div class="links">
-									{% for link in page.extra.links %}
-										<a href="{{ link.url }}">{{ link.label }}</a>
-										{% if not loop.last %}
-											<span class="separator">|</span>
-										{% endif %}
-									{% endfor %}
-								</div>
-							{% endif %}
-							{{ page.content | safe }}
-						</div>
-					</div>
-				</div>
-			</div>
-		{% endfor %}
-	{% endfor %}
+	{{ section_displays::normal(section_name="games") }}
+	{{ section_displays::normal(section_name="gamedev_tools") }}
 {% endblock content %}

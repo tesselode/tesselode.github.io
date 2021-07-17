@@ -1,0 +1,39 @@
+{% import "macros/collapse.html" as collapse %}
+
+{% macro normal(section_name) %}
+	{% set section = get_section(path=section_name ~ "/_index.md") %}
+	<h2>{{ section.title }}</h2>
+	{% for page in section.pages %}
+		{{ collapse::start(title=page.title) }}
+			{% if page.extra.primary_screenshot or page.extra.secondary_screenshots %}
+				<div class="screenshots">
+					{% if page.extra.primary_screenshot %}
+						<div class="primary-screenshot">
+							<img src="{{ page.extra.primary_screenshot }}" alt="{{ page.title }} screenshot 1">
+						</div>
+					{% endif %}
+					{% if page.extra.secondary_screenshots %}
+						<div class="secondary-screenshots">
+							{% for screenshot_url in page.extra.secondary_screenshots %}
+								<img src="{{ screenshot_url }}" alt="{{ page.title }} screenshot {{ loop.index + 1 }}">
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			{% endif %}
+			<div class="collapse-text">
+				{% if page.extra.links %}
+					<div class="links">
+						{% for link in page.extra.links %}
+							<a href="{{ link.url }}">{{ link.label }}</a>
+							{% if not loop.last %}
+								<span class="separator">|</span>
+							{% endif %}
+						{% endfor %}
+					</div>
+				{% endif %}
+				{{ page.content | safe }}
+			</div>
+		{{ collapse::end() }}
+	{% endfor %}
+{% endmacro %}
