@@ -15,7 +15,7 @@ body {
 	font-size: 1.5em;
 }
 
-a {
+a:not(.special-link) {
 	position: relative;
 	z-index: 1;
 	color: var(--accent-color);
@@ -68,48 +68,6 @@ h2 {
 
 h3 {
 	margin: 0;
-}
-
-.collapse {
-	background: #282828;
-	margin-bottom: 1em;
-
-	.collapse-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 1em;
-		background: #33333300;
-		cursor: pointer;
-
-		&:hover {
-			background: #333333;
-		}
-
-		i {
-			transition: transform 0.25s;
-		}
-	}
-
-	.collapse-content-wrapper {
-		max-height: 0;
-		overflow-y: hidden;
-		transition: max-height 0.25s;
-
-		.collapse-content {
-			padding-bottom: 1em;
-	
-			.collapse-text {
-				padding-left: 1em;
-				padding-right: 1em;
-			}
-	
-			p:nth-last-child(1) {
-				margin-bottom: 0;
-			}
-		}
-	}
-
 }
 
 .screenshots {
