@@ -5,14 +5,17 @@
 }
 
 body {
-	width: 100%;
-	max-width: 800px;
-	margin-left: auto;
-	margin-right: auto;
 	background: var(--bg-color);
 	color: var(--fg-color);
 	font-family: 'Karla', sans-serif;
 	font-size: 1.5em;
+}
+
+.container {
+	width: 100%;
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 a:not(.special-link) {

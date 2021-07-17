@@ -1,0 +1,25 @@
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	padding-left: 1em;
+	padding-right: 1em;
+	border-bottom: 2px solid var(--accent-color);
+
+	h1 {
+		margin-bottom: 0;
+	}
+
+	.social-links {
+		font-size: 1.25em;
+		
+		a {
+			color: var(--accent-color);
+			text-decoration: none;
+
+			&:hover {
+				color: var(--fg-color);
+			}
+		}
+	}
+}

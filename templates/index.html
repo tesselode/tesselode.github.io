@@ -3,11 +3,26 @@
 {% extends "base.html" %}
 
 {% block head %}
+	<link rel="stylesheet" href="/home.css">
+	<link rel="stylesheet" href="/collapse.css">
+	<link rel="stylesheet" href="/album-grid.css">
 	<script src="/collapse.js"></script>
 {% endblock head %}
 
 {% block content %}
-	{{ section_displays::normal(section_name="games") }}
-	{{ section_displays::normal(section_name="gamedev_tools") }}
-	{{ section_displays::music(section_name="music") }}
+	<header>
+		<h1>Tesselode Labs</h1>
+		<div class="social-links">
+			{% for link in section.extra.social_links %}
+				<a href="{{ link.url }}" target="_blank" class="special-link">
+					<i class="{{ link.icon }}"></i>
+				</a>
+			{% endfor %}
+		</div>
+	</header>
+	<div class="container">
+		{{ section_displays::normal(section_name="games") }}
+		{{ section_displays::normal(section_name="gamedev_tools") }}
+		{{ section_displays::music(section_name="music") }}
+	</div>
 {% endblock content %}

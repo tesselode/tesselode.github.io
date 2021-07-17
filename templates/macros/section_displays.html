@@ -23,14 +23,10 @@
 			{% endif %}
 			<div class="collapse-text">
 				{% if page.extra.links %}
-					<div class="links">
-						{% for link in page.extra.links %}
-							<a href="{{ link.url }}">{{ link.label }}</a>
-							{% if not loop.last %}
-								<span class="separator">|</span>
-							{% endif %}
-						{% endfor %}
-					</div>
+					{% for link in page.extra.links %}
+						<a href="{{ link.url }}">{{ link.label }}</a>
+						{% if not loop.last %}|{% endif %}
+					{% endfor %}
 				{% endif %}
 				{{ page.content | safe }}
 			</div>
