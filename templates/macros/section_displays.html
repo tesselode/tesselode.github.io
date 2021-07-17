@@ -43,7 +43,7 @@
 	<h2>{{ section.title }}</h2>
 	<div class="album-grid">
 		{% for page in section.pages %}
-			<a href="" class="special-link">
+			<a href="{{ page.extra.url }}" target="_blank" class="special-link">
 				<img src="{{ page.extra.cover }}" alt="{{ page.title }} album art">
 			</a>
 		{% endfor %}
