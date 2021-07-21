@@ -1,5 +1,5 @@
 .collapse {
-	background: #282828;
+	background: var(--bg-color-2);
 	margin-bottom: 1em;
 
 	.collapse-header {
@@ -7,11 +7,10 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.75em;
-		background: #33333300;
 		cursor: pointer;
-
+		
 		&:hover {
-			background: #333333;
+			background: var(--bg-color-3);
 		}
 
 		i {

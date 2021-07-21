@@ -1,8 +1,23 @@
 :root {
-	--bg-color: #111;
-	--fg-color: #eee;
+	--bg-color: #e6e6e6;
+	--bg-color-2: #dbdbdb;
+	--bg-color-3: #d0d0d0;
+	--fg-color: #111;
 	--accent-color: #e81a53;
+	--header-accent-color: var(--bg-color);
 }
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-color: #111;
+		--bg-color-2: #282828;
+		--bg-color-3: #333;
+		--fg-color: #eee;
+		--accent-color: #e81a53;
+		--header-accent-color: var(--fg-color);
+	}
+}
+
 
 body {
 	margin: 0;
@@ -56,6 +71,7 @@ img {
 h2 {
 	position: relative;
 	z-index: 1;
+	color: var(--header-accent-color);
 
 	&::before {
 		content: '';
