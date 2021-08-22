@@ -1,7 +1,11 @@
-{% macro start(title) %}
+{% macro title() %}
 <div class="collapse">
 	<div class="collapse-header">
-		<h3>{{ title }}</h3>
+		<div class="header-content">
+{% endmacro %}
+
+{% macro content() %}
+		</div>
 		<i class="fas fa-angle-down"></i>
 	</div>
 	<div class="collapse-content-wrapper">

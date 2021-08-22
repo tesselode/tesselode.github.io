@@ -4,7 +4,14 @@
 	{% set section = get_section(path=section_name ~ "/_index.md") %}
 	<h2>{{ section.title }}</h2>
 	{% for page in section.pages %}
-		{{ collapse::start(title=page.title) }}
+		{{ collapse::title() }}
+			<h3>{{ page.title }}</h3>
+			{% if page.taxonomies.tags %}
+				{% for tag in page.taxonomies.tags %}
+					<div class="tag">{{ tag }}</div>				
+				{% endfor %}
+			{% endif %}
+		{{ collapse::content() }}
 			{% if page.extra.primary_screenshot or page.extra.secondary_screenshots %}
 				<div class="screenshots">
 					{% if page.extra.primary_screenshot %}

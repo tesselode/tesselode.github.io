@@ -13,6 +13,19 @@
 			background: var(--bg-color-3);
 		}
 
+		.header-content {
+			display: flex;
+			align-items: center;
+
+			.tag {
+				margin-left: 1em;
+				padding: 0.15em 0.5em;
+				border-radius: 20px;
+				background: var(--bg-color-4);
+				font-size: 0.75em;
+			}
+		}
+
 		i {
 			transition: transform 0.25s;
 		}

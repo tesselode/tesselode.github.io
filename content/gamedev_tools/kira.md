@@ -2,6 +2,9 @@
 title = "Kira"
 date = 2020-11-18
 
+[taxonomies]
+tags = ["Audio", "Rust"]
+
 [extra]
 links = [
 	{ label = "crates.io", url = "https://crates.io/crates/kira" },
