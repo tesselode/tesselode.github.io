@@ -1,11 +1,12 @@
 .album-grid {
 	display: grid;
 	align-items: center;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	padding: 0.33em;
 
 	a {
 		position: relative;
-		margin: 0.5rem;
+		margin: 0.33em;
 		line-height: 0;
 		box-shadow: 0 0 var(--accent-color);
 		transform: translate(0, 0);

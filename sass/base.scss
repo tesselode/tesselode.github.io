@@ -26,7 +26,7 @@ body {
 	background: var(--bg-color);
 	color: var(--fg-color);
 	font-family: 'Karla', sans-serif;
-	font-size: 1.5em;
+	font-size: unquote("min(1.5em, 4vw)");
 }
 
 .container {
@@ -69,8 +69,9 @@ a:not(.special-link) {
 h2 {
 	position: relative;
 	z-index: 1;
-	margin-top: 4rem;
-	margin-bottom: 1rem;
+	margin-top: 1.75em;
+	margin-bottom: 0.5em;
+	padding-left: 0.33em;
 	color: var(--header-accent-color);
 	line-height: 1.75;
 
