@@ -69,7 +69,10 @@ a:not(.special-link) {
 h2 {
 	position: relative;
 	z-index: 1;
+	margin-top: 4rem;
+	margin-bottom: 1rem;
 	color: var(--header-accent-color);
+	line-height: 1.75;
 
 	&::before {
 		content: '';
