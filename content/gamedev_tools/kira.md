@@ -8,7 +8,7 @@ tags = ["Audio", "Rust"]
 [extra]
 links = [
 	{ label = "crates.io", url = "https://crates.io/crates/kira" },
-	{ label = "docs", url = "https://docs.rs/kira/" },
+	{ label = "Docs", url = "https://docs.rs/kira/" },
 	{ label = "GitHub", url = "https://github.com/tesselode/kira" },
 ]
 +++

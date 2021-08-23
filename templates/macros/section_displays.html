@@ -13,7 +13,7 @@
 			{% endif %}
 		{{ collapse::content() }}
 			{% if page.extra.primary_screenshot or page.extra.secondary_screenshots %}
-				<div class="screenshots">
+				<div class="screenshots {% if page.extra.pixel_art %} pixel-art {% endif %}">
 					{% if page.extra.primary_screenshot %}
 						<div class="primary-screenshot">
 							<img src="{{ page.extra.primary_screenshot }}" alt="{{ page.title }} screenshot 1">

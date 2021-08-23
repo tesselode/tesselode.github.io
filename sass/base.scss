@@ -66,10 +66,6 @@ a:not(.special-link) {
 	}
 }
 
-img {
-	width: 100%;
-}
-
 h2 {
 	position: relative;
 	z-index: 1;
@@ -94,6 +90,19 @@ h3 {
 
 .screenshots {
 	margin-bottom: 1em;
+
+	&.pixel-art img {
+		width: 100%;
+	}
+
+	&:not(.pixel-art) img {
+		max-width: 100%;
+	}
+
+	.primary-screenshot {
+		display: flex;
+		justify-content: center;
+	}
 
 	.secondary-screenshots {
 		display: flex;

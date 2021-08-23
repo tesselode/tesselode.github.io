@@ -8,6 +8,7 @@ secondary_screenshots = [
 	"https://img.itch.zone/aW1hZ2UvMTU3ODA2Lzc0MDEwNi5naWY=/250x600/RssQ7I.gif",
 	"https://img.itch.zone/aW1hZ2UvMTU3ODA2Lzc0MDEwNy5naWY=/250x600/DFavbZ.gif",
 ]
+pixel_art = true
 links = [
 	{ label = "itch.io", url = "https://tesselode.itch.io/netty" },
 	{ label = "lexaloffle", url = "https://www.lexaloffle.com/bbs/?pid=42720" },

@@ -8,6 +8,7 @@ secondary_screenshots = [
 	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1MzAuZ2lm/250x600/iYIGmn.gif",
 	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1NDIuZ2lm/250x600/GyyhMA.gif",
 ]
+pixel_art = true
 links = [
 	{ label = "itch.io", url = "https://tesselode.itch.io/eatgirl" },
 ]
