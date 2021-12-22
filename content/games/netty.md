@@ -2,9 +2,6 @@
 title = "NETTY"
 date = 2017-07-13
 
-[taxonomies]
-tags = ["PICO-8"]
-
 [extra]
 secondary_screenshots = [
 	"https://img.itch.zone/aW1hZ2UvMTU3ODA2Lzc0MDEwNS5naWY=/250x600/5GZ0aA.gif",

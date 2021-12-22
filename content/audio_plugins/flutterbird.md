@@ -2,9 +2,6 @@
 title = "Flutterbird"
 date = 2018-09-03
 
-[taxonomies]
-tags = ["C++"]
-
 [extra]
 primary_screenshot = "https://img.itch.zone/aW1hZ2UvMjg4NzIwLzE0MDg1NjAucG5n/347x500/xPx3XJ.png"
 links = [
