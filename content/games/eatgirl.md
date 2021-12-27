@@ -1,5 +1,6 @@
 +++
 title = "EAT GIRL"
+description = "Surreal top-down action game"
 date = 2019-09-21
 
 [extra]

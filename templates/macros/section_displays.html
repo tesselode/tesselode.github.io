@@ -6,6 +6,9 @@
 	{% for page in section.pages %}
 		{{ collapse::title() }}
 			<h3>{{ page.title }}</h3>
+			{% if page.description %}
+				<span class="description">{{ page.description }}</span>
+			{% endif %}
 			{% if page.taxonomies.tags %}
 				{% for tag in page.taxonomies.tags %}
 					<div class="tag">{{ tag }}</div>				
