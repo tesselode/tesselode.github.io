@@ -31,3 +31,9 @@ header {
 	font-size: 0.875rem;
 	letter-spacing: -0.015em;
 }
+
+@media (max-width: 600px) {
+	header {
+		display: block;
+	}
+}
