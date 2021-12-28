@@ -27,8 +27,8 @@ html {
 	background: var(--bg-color);
 	color: var(--fg-color);
 	font-family: 'Karla', sans-serif;
-	font-size: unquote("min(24px, 4vw)");
-	letter-spacing: -0.025em;
+	font-size: unquote("min(20px, 4vw)");
+	letter-spacing: -0.0225em;
 	line-height: 1.4;
 }
 
@@ -70,6 +70,7 @@ a:not(.special-link) {
 }
 
 h1 {
+	font-size: 2.5em;
 	letter-spacing: -0.04em;
 }
 
@@ -80,6 +81,7 @@ h2 {
 	margin-bottom: 0.5rem;
 	padding: 0.25rem;
 	color: var(--header-accent-color);
+	font-size: 1.75em;
 	letter-spacing: -0.04em;
 
 	&::before {
@@ -96,7 +98,8 @@ h2 {
 }
 
 h3 {
-	letter-spacing: -0.04em;
+	font-size: 1.25em;
+	letter-spacing: -0.03em;
 }
 
 p {
