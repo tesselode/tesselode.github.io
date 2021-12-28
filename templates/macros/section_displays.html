@@ -33,10 +33,12 @@
 			{% endif %}
 			<div class="collapse-text">
 				{% if page.extra.links %}
-					{% for link in page.extra.links %}
-						<a href="{{ link.url }}">{{ link.label }}</a>
-						{% if not loop.last %}|{% endif %}
-					{% endfor %}
+					<p>
+						{% for link in page.extra.links %}
+							<a href="{{ link.url }}">{{ link.label }}</a>
+							{% if not loop.last %}|{% endif %}
+						{% endfor %}
+					</p>
 				{% endif %}
 				{{ page.content | safe }}
 			</div>
