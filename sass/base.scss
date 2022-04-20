@@ -68,10 +68,8 @@ h2 {
 		background: var(--accent-color);
 		transform: skewX(-15deg);
 	}
-}
 
-@media (max-width: 850px) {
-	h2 {
+	@media (max-width: 850px) {
 		padding: 0.25rem 0.67rem;
 
 		&::before {
@@ -80,6 +78,7 @@ h2 {
 		}
 	}
 }
+
 
 h3 {
 	font-size: 1.25em;
@@ -139,4 +138,8 @@ header {
 			}
 		}
     }
+
+	@media (max-width: 600px) {
+		display: block;
+	}
 }

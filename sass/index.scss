@@ -9,6 +9,8 @@
     margin-bottom: 1rem;
 
     .links {
+        flex-shrink: 0;
+
         .separator {
             &::after {
                 content: '/';
