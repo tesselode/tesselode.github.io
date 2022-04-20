@@ -6,6 +6,7 @@ date = 2018-08-20
 tags = ["ECS", "LÖVE", "Lua"]
 
 [extra]
+short_description = "ECS-ish entity management for LÖVE"
 links = [
 	{ label = "GitHub", url = "https://github.com/tesselode/nata" },
 	{ label = "Docs", url = "https://tesselode.github.io/nata/" },

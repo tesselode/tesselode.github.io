@@ -3,6 +3,7 @@ title = "EAT GIRL"
 date = 2019-09-21
 
 [extra]
+short_description = "Surreal top-down action game"
 screenshots = [
 	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1MjguZ2lm/250x600/4eFbkb.gif",
 	"https://img.itch.zone/aW1hZ2UvNDQ0NDQzLzIzODc1MzAuZ2lm/250x600/iYIGmn.gif",

@@ -6,6 +6,7 @@ date = 2019-01-18
 tags = ["Scene management", "LÖVE", "Lua"]
 
 [extra]
+short_description = "Scene management for LÖVE"
 links = [
 	{ label = "GitHub", url = "https://github.com/tesselode/roomy" },
 ]

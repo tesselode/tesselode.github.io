@@ -1,13 +1,17 @@
 {% extends "base.html" %}
+{% import "macros/section_displays.html" as section_displays %}
 
 {% block title %} Tesselode Labs {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/album-grid.css">
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Lorem ipsum</h1>
-    <p>
-        Rerum recusandae quis et iure in voluptas. Quia quae voluptas dolorem voluptatem. Eos est repudiandae voluptatibus. Sed sint totam est. Asperiores rerum non ab voluptatem. A est eligendi labore reprehenderit.
-    </p>
-    <a href="">test link please ignore</a>
-</div>
+    <div class="container">
+        {{ section_displays::normal(section_name="games") }}
+        {{ section_displays::music(section_name="music") }}
+        {{ section_displays::normal(section_name="audio_plugins") }}
+        {{ section_displays::normal(section_name="gamedev_tools") }}
+    </div>
 {% endblock content %}

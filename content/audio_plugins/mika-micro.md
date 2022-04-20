@@ -3,6 +3,7 @@ title = "Mika Micro"
 date = 2018-04-24
 
 [extra]
+short_description = "Small, expressive synth"
 screenshots = [
 	"https://raw.githubusercontent.com/tesselode/mika-micro/master/images/screenshot.png",
 ]

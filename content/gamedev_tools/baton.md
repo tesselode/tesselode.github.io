@@ -6,6 +6,7 @@ date = 2018-03-25
 tags = ["Input", "LÖVE", "Lua"]
 
 [extra]
+short_description = "Keyboard/gamepad input abstraction for LÖVE"
 links = [
 	{ label = "GitHub", url = "https://github.com/tesselode/baton" },
 ]

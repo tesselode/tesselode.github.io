@@ -3,6 +3,7 @@ title = "The Tops Don't Sting You"
 date = 2015-08-19
 
 [extra]
+short_description = "Swimming platformer"
 screenshots = [
 	"https://img.itch.zone/aW1hZ2UvMzA3MDcvMTMyMDgwLmdpZg==/250x600/qQBzRu.gif",
 	"https://img.itch.zone/aW1hZ2UvMzA3MDcvMTMyMDgxLmdpZg==/250x600/BvTmRE.gif",

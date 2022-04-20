@@ -3,6 +3,7 @@ title = "Cocoa Delay"
 date = 2018-06-11
 
 [extra]
+short_description = "Warm, lively delay"
 screenshots = [
 	"https://raw.githubusercontent.com/tesselode/cocoa-delay/master/images/screenshot.png",
 ]

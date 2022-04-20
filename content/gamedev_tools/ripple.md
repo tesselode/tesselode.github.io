@@ -6,6 +6,7 @@ date = 2019-12-12
 tags = ["Audio", "LÖVE", "Lua"]
 
 [extra]
+short_description = "Audio helpers for LÖVE"
 links = [
 	{ label = "GitHub", url = "https://github.com/tesselode/ripple" },
 ]

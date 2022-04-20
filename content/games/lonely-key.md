@@ -3,6 +3,7 @@ title = "Sarah and the Lonely Key"
 date = 2019-09-04
 
 [extra]
+short_description = "Many doors, one key"
 screenshots = [
 	"https://img.itch.zone/aW1hZ2UvNDYxMDU2LzIzNDU2NzguZ2lm/250x600/2EG28b.gif",
 	"https://img.itch.zone/aW1hZ2UvNDYxMDU2LzIzNDU2NzYuZ2lm/250x600/fQleKQ.gif",

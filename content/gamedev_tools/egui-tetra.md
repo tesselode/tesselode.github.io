@@ -6,6 +6,7 @@ date = 2021-06-26
 tags = ["GUI", "Rust"]
 
 [extra]
+short_description = "Integrates egui with Tetra"
 links = [
 	{ label = "crates.io", url = "https://crates.io/crates/egui-tetra" },
 	{ label = "docs", url = "https://docs.rs/egui-tetra/" },

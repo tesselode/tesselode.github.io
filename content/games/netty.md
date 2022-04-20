@@ -3,6 +3,7 @@ title = "NETTY"
 date = 2017-07-13
 
 [extra]
+short_description = "STRATEGIC KINETIC ACTION VIDEOGAME"
 screenshots = [
 	"https://img.itch.zone/aW1hZ2UvMTU3ODA2Lzc0MDEwNS5naWY=/250x600/5GZ0aA.gif",
 	"https://img.itch.zone/aW1hZ2UvMTU3ODA2Lzc0MDEwNi5naWY=/250x600/RssQ7I.gif",

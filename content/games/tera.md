@@ -3,6 +3,7 @@ title = "Tera: Mind Over Matter"
 date = 2019-02-07
 
 [extra]
+short_description = "Alternate timeline puzzle game"
 screenshots = [
 	"https://www.lexaloffle.com/bbs/files/10162/1.gif",
 	"https://www.lexaloffle.com/bbs/files/10162/2.gif",

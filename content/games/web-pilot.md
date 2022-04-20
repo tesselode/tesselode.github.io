@@ -3,6 +3,7 @@ title = "Web Pilot"
 date = 2018-08-15
 
 [extra]
+short_description = "Wireframe tube shooter"
 screenshots = [
 	"https://img.itch.zone/aW1hZ2UvMjkyOTg0LzE0Mjg0MjEuZ2lm/250x600/Lcjjo7.gif",
 	"https://img.itch.zone/aW1hZ2UvMjkyOTg0LzE0Mjg0MTkuZ2lm/250x600/ZMSuAS.gif",

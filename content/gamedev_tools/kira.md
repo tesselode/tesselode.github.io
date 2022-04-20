@@ -6,6 +6,7 @@ date = 2020-11-18
 tags = ["Audio", "Rust"]
 
 [extra]
+short_description = "Expressive game audio library"
 links = [
 	{ label = "crates.io", url = "https://crates.io/crates/kira" },
 	{ label = "Docs", url = "https://docs.rs/kira/" },

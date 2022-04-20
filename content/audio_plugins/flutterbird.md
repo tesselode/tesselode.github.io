@@ -3,6 +3,7 @@ title = "Flutterbird"
 date = 2018-09-03
 
 [extra]
+short_description = "Wiggly pitch and volume"
 screenshots = [
 	"https://img.itch.zone/aW1hZ2UvMjg4NzIwLzE0MDg1NjAucG5n/347x500/xPx3XJ.png",
 ]
