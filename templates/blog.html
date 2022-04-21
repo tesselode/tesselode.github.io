@@ -2,6 +2,24 @@
 {% import "macros/section_displays.html" as section_displays %}
 
 {% block title %} Blog | Tesselode Labs {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="/blog.css">
+{% endblock %}
 
 {% block content %}
+<div class="container">
+    <h1>Blog</h1>
+    <ul>
+        {% for page in section.pages %}
+            <li>
+                <h3 class="title">
+                    <a href="{{ page.permalink | safe }}">
+                        {{ page.title }}
+                    </a>
+                </h3>
+                <p class="date">{{ page.date | date(format="%B %d, %Y") }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock content %}

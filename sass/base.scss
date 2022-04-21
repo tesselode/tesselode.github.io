@@ -91,6 +91,7 @@ h3 {
 }
 
 a:not(.special-link) {
+	display: inline-block;
 	position: relative;
 	z-index: 1;
 	color: var(--accent-color);
