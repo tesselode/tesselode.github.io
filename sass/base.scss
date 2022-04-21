@@ -40,6 +40,12 @@ html {
 	margin-right: auto;
 }
 
+.site-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
 h1 {
     font-size: 2.5rem;
     font-weight: 700;
@@ -49,8 +55,6 @@ h1 {
 h2 {
 	position: relative;
 	z-index: 1;
-	margin-top: 2rem;
-	margin-bottom: 0.5rem;
 	padding: 0.25rem 0;
 	color: var(--header-accent-color);
 	font-size: 1.75em;

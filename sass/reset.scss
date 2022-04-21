@@ -8,3 +8,8 @@
 	text-decoration: none;
 	list-style-type: none;
 }
+
+img, picture, svg, canvas, video {
+	display: block;
+	max-width: 100%;
+}

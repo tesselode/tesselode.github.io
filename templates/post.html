@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "macros/section_displays.html" as section_displays %}
+
+{% block title %} {{ page.title }} | Tesselode Labs {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/post.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ page.title }}</h1>
+    <p class="date">Published {{ page.date | date(format="%B %d, %Y") }}</p>
+
+    {{ page.content | safe }}
+</div>
+{% endblock content %}
