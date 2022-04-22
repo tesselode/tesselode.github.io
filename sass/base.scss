@@ -188,6 +188,10 @@ nav {
 				transform: skewX(-15deg);
 			}
 
+			&.active::before {
+				background: var(--bg-color-4);
+			}
+
 			a {
 				width: 100%;
 

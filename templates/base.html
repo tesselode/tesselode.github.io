@@ -29,8 +29,20 @@
 	<div class="container">
 		<nav>
 			<ul>
-				<li><a href="/">Projects</a></li>
-				<li><a href="/articles">Articles</a></li>
+				<li>
+					{% if current_path == "/" %}
+						Projects
+					{% else %}
+						<a href="/">Projects</a>
+					{% endif %}
+				</li>
+				<li>
+					{% if current_path == "/articles/" %}
+						Articles
+					{% else %}
+						<a href="/articles">Articles</a>
+					{% endif %}
+				</li>
 			</ul>
 		</nav>
 	</div>
