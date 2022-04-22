@@ -13,11 +13,11 @@
 	{% block head %} {% endblock %}
 </head>
 <body>
-	<a href="#main-content" class="skip-to-main-content-link">
+	<a href="#main-content" id="skip-to-main-content-link">
 		Skip to main content
 	</a>
 	<header>
-		<div class="site-title">Tesselode Labs</div>
+		<a href="/" id="site-title">Tesselode Labs</a>
 		<div class="social-links">
 			{% for link in config.extra.social_links %}
 				<a href="{{ link.url }}" target="_blank" class="special-link">
