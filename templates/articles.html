@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% import "macros/section_displays.html" as section_displays %}
 
-{% block title %} Blog | Tesselode Labs {% endblock %}
+{% block title %} Articles | Tesselode Labs {% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="/blog.css">
+    <link rel="stylesheet" href="/articles.css">
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Blog</h1>
+    <h1>Articles</h1>
     <ul>
         {% for page in section.pages %}
             <li>
