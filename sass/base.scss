@@ -163,6 +163,8 @@ nav {
 			display: block;
 			flex-grow: 1;
 			text-align: center;
+			margin-left: 0;
+			list-style-type: none;
 
 			&:not(:last-of-type) {
 				margin-right: 0.5rem;
