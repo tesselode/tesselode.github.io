@@ -13,6 +13,9 @@
 	{% block head %} {% endblock %}
 </head>
 <body>
+	<a href="#main-content" class="skip-to-main-content-link">
+		Skip to main content
+	</a>
 	<header>
 		<div class="site-title">Tesselode Labs</div>
 		<div class="social-links">
@@ -31,6 +34,7 @@
 			</ul>
 		</nav>
 	</div>
+	<span id="main-content"></span>
 	{% block content %} {% endblock %}
 </body>
 </html>

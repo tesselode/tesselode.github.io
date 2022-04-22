@@ -110,7 +110,7 @@ a:not(.special-link) {
 		transition: width 0.2s;
 	}
 
-	&:hover {
+	&:hover, &:focus {
 		color: var(--bg-color);
 		transition: color 0.1s 0.1s;
 
@@ -138,7 +138,7 @@ header {
 			color: var(--accent-color);
 			text-decoration: none;
 
-			&:hover {
+			&:hover, &:focus {
 				color: var(--fg-color);
 			}
 		}
@@ -188,5 +188,17 @@ nav {
 				}
 			}
 		}
+	}
+}
+
+.skip-to-main-content-link {
+	position: absolute !important;
+	top: 1rem;
+	left: -9999rem;
+	padding: 0.5rem;
+	background: var(--bg-color-2);
+
+	&:focus {
+		left: 1rem;
 	}
 }
