@@ -13,7 +13,8 @@ links = [
 ]
 +++
 
-Mika Micro is a subtractive synthesizer plugin that aims to be fun and expressive with a minimal set of controls.
+Mika Micro is a subtractive synthesizer plugin that aims to be fun and
+expressive with a minimal set of controls.
 
 Features:
 

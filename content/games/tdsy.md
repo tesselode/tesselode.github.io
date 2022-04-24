@@ -14,4 +14,5 @@ links = [
 ]
 +++
 
-The Tops Don't Sting You is a time attack focused swimming platformer where you bounce on jellyfish.
+The Tops Don't Sting You is a time attack focused swimming platformer where you
+bounce on jellyfish.

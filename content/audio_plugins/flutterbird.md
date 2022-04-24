@@ -13,4 +13,8 @@ links = [
 ]
 +++
 
-Flutterbird is a free, open-source effect plugin for adding pitch and volume fluctuation to incoming audio. It can be used for traditional wow/flutter effects as well as more chaotic, extreme modulation. Flutterbird has four separate oscillators with adjustable speeds that can be mapped to either pitch or volume.
+Flutterbird is a free, open-source effect plugin for adding pitch and volume
+fluctuation to incoming audio. It can be used for traditional wow/flutter
+effects as well as more chaotic, extreme modulation. Flutterbird has four
+separate oscillators with adjustable speeds that can be mapped to either pitch
+or volume.

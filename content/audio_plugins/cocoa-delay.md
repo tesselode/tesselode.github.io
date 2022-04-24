@@ -13,7 +13,8 @@ links = [
 ]
 +++
 
-Cocoa Delay is a free, open-source delay plugin in VST format. It focuses on clean design, easy operation, and a warm, lively sound.
+Cocoa Delay is a free, open-source delay plugin in VST format. It focuses on
+clean design, easy operation, and a warm, lively sound.
 
 Notable features:
 

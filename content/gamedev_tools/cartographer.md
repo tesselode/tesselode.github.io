@@ -13,4 +13,6 @@ links = [
 ]
 +++
 
-Cartographer is a small library for loading, reading, and drawing Tiled maps in LÖVE. It draws tile layers and tile objects, and it has various utilities to make parsing Tiled maps easier.
+Cartographer is a small library for loading, reading, and drawing Tiled maps in
+LÖVE. It draws tile layers and tile objects, and it has various utilities to
+make parsing Tiled maps easier.

@@ -12,4 +12,5 @@ links = [
 ]
 +++
 
-Ripple is an audio library for LÖVE that simplifies various aspects of audio handling, including tagging and playing multiple instances of a sound.
+Ripple is an audio library for LÖVE that simplifies various aspects of audio
+handling, including tagging and playing multiple instances of a sound.

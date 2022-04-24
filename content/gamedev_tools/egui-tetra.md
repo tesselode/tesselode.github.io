@@ -14,4 +14,5 @@ links = [
 ]
 +++
 
-egui-tetra is a library that helps integrate egui, an immediate mode GUI library, with Tetra, a 2D game framework.
+egui-tetra is a library that helps integrate egui, an immediate mode GUI
+library, with Tetra, a 2D game framework.
