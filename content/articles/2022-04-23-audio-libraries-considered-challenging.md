@@ -304,6 +304,73 @@ There's only one problem: where does the `SoundId` come from?
 
 ## Storing Resources on the Audio Thread
 
+We need to store resources (sounds, mixer tracks, etc.) on the audio thread in a
+way that provides:
+
+- Fast iteration
+- Fast random access to resources via an ID that the gameplay thread also has
+  access to
+
+### Solution 1: Arenas
+
+The arena data structure is a natural fit. An arena is essentially a `Vec` of
+slots that can be occupied or empty. When we insert an item into the arena, the
+arena picks an empty slot to insert the item into and returns a key that
+contains the index of that slot. Accessing individual items is as fast as
+indexing into a `Vec`. Iterating over items is slow if you do it the naive way,
+but you can use a linked list to make iteration much faster.
+
+So this will be the flow of sending resources to the audio thread:
+
+1. The user calls a function in the library to send a resource to the audio
+   thread
+2. The library sends a command to the audio thread with the resource to add and
+   waits for the audio thread to send back the key
+3. Next time the audio thread starts processing, it receives the command to add
+   the resource, adds it to the arena, and sends back the key through a separate
+   ringbuffer
+4. Next time the gameplay thread checks for the key, it receives it and returns
+   it to the user
+
+So we'll have to wait a bit for the audio thread to return the key, but it
+shouldn't take too long, right?
+
+...right?
+
+#### Why it takes too long
+
+### Solution 2: `IndexMap`
+
+If we store resources in a hash map, we can create keys on the gameplay thread
+and just send them to the audio thread along with the command to add a resource.
+The standard library's `HashMap` isn't very quick to iterate over, but the
+[`indexmap`](https://crates.io/crates/indexmap) crate solves that problem for
+us.
+
+Here's the new flow:
+
+1. The user calls a function in the library to send a resource to the audio
+   thread
+2. The library increments an ID internally to use as the key for the resource
+3. The library sends a command to the audio thread to add the resource with the
+   ID
+4. The library immediately returns the ID to the caller
+
+Problem solved! We don't have to wait for the audio thread to send back an ID.
+
+There are some downsides to this approach, though:
+
+1. Hash maps are slower to get items from than arenas, because they have to hash
+   the key to get the location of the item in memory
+2. `IndexMap`s lose capacity over time...wait, what?
+
+If you're like me, you'd be surprised to learn the latter fact. But I'll prove
+it to you!
+
+https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=a163cd12ab67bf774d0a9adef9187419
+
+### Solution 3: Revisiting arenas
+
 ---
 
 The main reason audio is difficult: it runs at ~48,000 FPS
