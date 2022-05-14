@@ -9,6 +9,11 @@
 	--fg-color: #111;
 	--accent-color: #e81a53;
 	--header-accent-color: var(--bg-color);
+	--spacing-1: 0.25rem;
+	--spacing-2: 0.5rem;
+	--spacing-3: 1rem;
+	--spacing-4: 2rem;
+	--spacing-5: 3rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,7 +66,7 @@ h1 {
 h2 {
 	position: relative;
 	z-index: 1;
-	padding: 0.25rem 0;
+	padding: var(--spacing-1) 0;
 	color: var(--header-accent-color);
 	font-size: 1.75em;
 	font-weight: bold;
@@ -73,14 +78,14 @@ h2 {
 		z-index: -1;
 		top: 0;
 		left: -1rem;
-		width: calc(100% + 2rem);
+		width: calc(100% + var(--spacing-4));
 		height: 100%;
 		background: var(--accent-color);
 		transform: skewX(-15deg);
 	}
 
 	@media (max-width: 850px) {
-		padding: 0.25rem 0.67rem;
+		padding: var(--spacing-1) var(--spacing-2);
 
 		&::before {
 			left: -10rem;
@@ -94,6 +99,16 @@ h3 {
 	font-size: 1.25em;
 	font-weight: bold;
 	letter-spacing: -0.03em;
+}
+
+h4 {
+	font-size: 1.125em;
+	font-weight: bold;
+	letter-spacing: -0.03em;
+}
+
+strong {
+	font-weight: bold;
 }
 
 a:not(.special-link) {
@@ -132,9 +147,9 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: baseline;
-    margin-top: 1rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
+    margin-top: var(--spacing-3);
+	padding-left: var(--spacing-3);
+	padding-right: var(--spacing-3);
 	border-bottom: 2px solid var(--accent-color);
 
     .social-links {
@@ -173,7 +188,7 @@ nav {
 			list-style-type: none;
 
 			&:not(:last-of-type) {
-				margin-right: 0.5rem;
+				margin-right: var(--spacing-2);
 			}
 
 			&::before {
@@ -207,13 +222,13 @@ nav {
 	display: block;
 	position: absolute;
 	z-index: 100;
-	top: 1rem;
+	top: var(--spacing-1);
 	left: -9999rem;
 	padding: 0.5rem;
 	background: var(--bg-color-2);
 	box-shadow: 0 0 16px black;
 
 	&:focus {
-		left: 1rem;
+		left: var(--spacing-1);
 	}
 }

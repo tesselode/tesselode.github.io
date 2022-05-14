@@ -5,7 +5,12 @@ date = 2022-04-23
 
 I develop a game audio library called
 [Kira](https://github.com/tesselode/kira/). Here's some of the hard parts I've
-figured out.
+figured out. If you decide to make an audio library for some reason, learn from
+my experimentation!
+
+<aside>
+Note: this article uses Rust terminology and code snippets, since that's what Kira is written in, but the same principles will apply in C and C++.
+</aside>
 
 ## Why Audio is Hard
 
@@ -56,11 +61,6 @@ programming.
 
 Keeping these two constraints in mind, let's look at some problems that come up
 when creating a game audio library.
-
-<aside>
-The code examples will be in Rust, since that's what Kira is written in. The same
-principles will apply in C and C++.
-</aside>
 
 ## Communicating Between Threads
 
@@ -396,9 +396,9 @@ Problem solved! We don't have to wait for the audio thread to send back an ID.
 
 There are some downsides to this approach, though:
 
-1. Hash maps are slower to get items from than arenas, because they have to hash
-   the key to get the location of the item in memory
-2. `IndexMap`s lose capacity over time...wait, what?
+- Hash maps are slower to get items from than arenas, because they have to hash
+  the key to get the location of the item in memory
+- `IndexMap`s lose capacity over time...wait, what?
 
 If you're like me, you'd be surprised to learn the latter fact. But I'll prove
 it to you!
