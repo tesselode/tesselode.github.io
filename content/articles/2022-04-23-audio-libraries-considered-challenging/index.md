@@ -4,8 +4,8 @@ date = 2022-04-23
 +++
 
 I develop a game audio library called
-[Kira](https://github.com/tesselode/kira/). Here's some of the challenges I've
-faced.
+[Kira](https://github.com/tesselode/kira/). Here's some of the hard parts I've
+figured out.
 
 ## Why Audio is Hard
 
@@ -17,7 +17,19 @@ you might not even notice.
 **Audio runs at about 48,000 frames per second.** And if there's a frame drop
 (in audio this is called a buffer underrun), you'll notice.
 
-[example of audio with stuttering]
+<figure>
+  <audio controls src="normal playback example.ogg"></audio>
+  <figcaption>
+    A short piece of music playing back normally
+  </figcaption>
+</figure>
+
+<figure>
+  <audio controls src="underrun example.ogg"></audio>
+  <figcaption>
+    A short piece of music playing back with underruns
+  </figcaption>
+</figure>
 
 When writing audio code, you want to avoid underruns at all costs. This means
 **you have to do your audio processing on a separate thread.** If you tried to
@@ -339,6 +351,30 @@ shouldn't take too long, right?
 
 #### Why it takes too long
 
+When you hear audio coming from speakers, you're hearing an analog
+representation of digital samples that are evenly distributed over time. But an
+application does not produce those digital samples at a constant rate. If it
+did, then if any of the samples took too long to calculate, the application
+would fall behind and wouldn't be able to produce audio fast enough, leading to
+underruns. Instead, the operating system periodically asks the application to
+produce a batch of samples at a time.
+
+Let's say the operating system wants to output audio at 48,000 Hz (or samples
+per second), and it requests 512 samples at a time. The audio thread will
+produce 512 samples of audio, then sleep until the operating system wakes it up
+for the next batch of samples. The operating system might not need to wake it up
+for another 10 milliseconds, since that's the amount of audio it has queued up.
+
+If the gameplay thread sends a command to play a sound right after the audio
+thread falls asleep, the audio thread won't receive it and send back the sound
+ID until 10ms later. To put that into perspective, in a 60 FPS game, 10ms is
+more than half a frame. So if we played two sounds in a row, blocking the
+gameplay thread each time to wait for the audio thread to send back a sound ID,
+we could end up with a frame drop. That's not acceptable performance for an
+audio library.
+
+So arenas are out.
+
 ### Solution 2: `IndexMap`
 
 If we store resources in a hash map, we can create keys on the gameplay thread
@@ -367,41 +403,82 @@ There are some downsides to this approach, though:
 If you're like me, you'd be surprised to learn the latter fact. But I'll prove
 it to you!
 
-https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=a163cd12ab67bf774d0a9adef9187419
+```rust
+use indexmap::IndexMap;
+
+fn main() {
+	let mut map = IndexMap::with_capacity(10);
+	for i in 0..1000 {
+		map.insert(i, i);
+		println!("{} / {}", map.len(), map.capacity());
+		if i % 5 == 0 {
+			map.swap_remove_index(i / 2);
+			map.swap_remove_index(i / 3);
+			map.swap_remove_index(i / 4);
+		}
+	}
+}
+```
+
+Here's a small example where I add items to an `IndexMap`. Every 5 items added,
+I remove 3 items at arbitrary indices. Every time I add an item, I print the
+length and total capacity of the map. You can run this code snippet yourself
+[here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=a163cd12ab67bf774d0a9adef9187419).
+
+We end up with a result something like this:
+
+```
+28 / 28
+26 / 26 // capacity decreases
+27 / 27
+28 / 28
+29 / 56
+30 / 56
+```
+
+Notice the dip from a capacity of 28 to a capacity of 26? This isn't a bug,
+[it's just how the hashbrown algorithm works](https://github.com/bluss/indexmap/issues/183)
+(which both `IndexMap` and the standard library's `HashMap` use).
+
+It turns out there is a workaround: the capacity will never decrease if you
+don't exceed 50% of the capacity. So we could just allocate twice as much space
+as we need to avoid the problem. Kira v0.5 uses this approach, but I didn't feel
+comfortable relying on an unspoken implementation detail of a library.
+
+<aside>
+To be clear, I don't fault anybody for implementing a hash map in a way that results in the capacity decreasing. In almost all cases, allocating memory is perfectly fine. Just not this one!
+</aside>
 
 ### Solution 3: Revisiting arenas
 
----
+Maybe an arena can work; it would just need to let us generate new keys from the
+gameplay thread. A suggestion from the Rust Audio discord got me thinking about
+how atomics could be used to serve this purpose. I eventually came up with an
+arena that has two components:
 
-The main reason audio is difficult: it runs at ~48,000 FPS
+- The arena itself, which holds the resource data and lives on the audio thread
+- An arena controller, which tracks free and empty slots and can generate keys.
+  The controller can be cloned and sent to other threads.
 
-It's very important that audio stays running at a consistent FPS [example of
-what happens if it doesn't]
+When we want to add an item to an arena, we first reserve a key from the arena
+controller. If too many keys have been reserved, the controller will tell us the
+arena is full and not give us a key. If there are slots available, we can send
+the key along with the command to add an item and return the key immediately to
+the caller.
 
-Main implications:
+I find this to be a really elegant solution, since it solves multiple problems
+at once:
 
-- Audio has to run on a different thread, which creates challenges on its own
-- Cannot allocate memory or block on the audio thread
+- The backing data store is a `Vec`, so there won't be any surprises with the
+  capacity
+- Looking up resources is fast, since the keys are just indices into the `Vec`
+- We can generate new keys direcly from the gameplay thread
+- It's easy to get information on the number of allocated resources and
+  remaining capacity from the gameplay thread
 
-## Threading challenges
+This is the solution I'm using for Kira v0.6. You can see my implementation of
+the arena [here](https://crates.io/crates/atomic-arena).
 
-- Cannot directly interact with things on a different thread, so you have to use
-  message passing
-- You need a unique identifier for things you want to control
-- How do you create the unique identifier? Possible options:
-  - Create the unique identifier on the non-realtime thread, use hashmaps on the
-    audio thread
-    - Problems:
-      - Hashmaps lose capacity over time
-      - Hashing is slow:tm:
-  - Use an arena, wait for the arena to send back a new ID
-    - Problem: way too slow
-  - Don't use identifiers at all, just keep pointers to the objects you want to
-    control
-    - Problems:
-      - Now you have to operate everything via atomics, since mutexes are out -
-        limits the kind of data you can use
-      - Can be hard to track allocatons and make sure they're all deallocated on
-        the non-realtime thread
+## Conclusion
 
-Current solution: atomic arena
+Making audio libraries is hard.
