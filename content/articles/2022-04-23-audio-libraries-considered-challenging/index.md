@@ -407,16 +407,16 @@ it to you!
 use indexmap::IndexMap;
 
 fn main() {
-	let mut map = IndexMap::with_capacity(10);
-	for i in 0..1000 {
-		map.insert(i, i);
-		println!("{} / {}", map.len(), map.capacity());
-		if i % 5 == 0 {
-			map.swap_remove_index(i / 2);
-			map.swap_remove_index(i / 3);
-			map.swap_remove_index(i / 4);
-		}
-	}
+  let mut map = IndexMap::with_capacity(10);
+  for i in 0..1000 {
+    map.insert(i, i);
+    println!("{} / {}", map.len(), map.capacity());
+    if i % 5 == 0 {
+      map.swap_remove_index(i / 2);
+      map.swap_remove_index(i / 3);
+      map.swap_remove_index(i / 4);
+    }
+  }
 }
 ```
 
