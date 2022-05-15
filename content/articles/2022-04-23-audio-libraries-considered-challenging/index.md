@@ -14,13 +14,15 @@ Note: this article uses Rust terminology and code snippets, since that's what Ki
 
 ## Why Audio is Hard
 
-Graphics usually update at somewhere between 60 and 500 frames per second. If
-the framerate drops below the monitor's refresh rate, you'll continue to see the
-last rendered frame until the next frame is ready. If it's a small frame drop,
-you might not even notice.
+When it comes to graphics, different games have different acceptable framerates.
+Most people would consider 60 FPS to look "smooth". But even if the framerate
+dips a little bit below 60 FPS, it's not the end of the world. The game will
+keep displaying the previously rendered frame until the next one is ready. If
+it's a small enough frame drop, the player might not even notice.
 
-**Audio runs at about 48,000 frames per second.** And if there's a frame drop
-(in audio this is called a buffer underrun), you'll notice.
+But if your game can't produce audio as quickly as the operating system wants
+(this is called a buffer underrun), the operating system has no choice but to
+fill the gaps with silence. And the player _will_ notice.
 
 <figure>
   <audio controls src="normal playback example.ogg"></audio>
@@ -35,6 +37,10 @@ you might not even notice.
     A short piece of music playing back with underruns
   </figcaption>
 </figure>
+
+If you can't listen to the example audio, imagine that when a game had frame
+drops, the monitor would display a black screen for all the frames the game
+couldn't produce quickly enough. Audio stuttering is the equivalent of that.
 
 When writing audio code, you want to avoid underruns at all costs. This means
 **you have to do your audio processing on a separate thread.** If you tried to
