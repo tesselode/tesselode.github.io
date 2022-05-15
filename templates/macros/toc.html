@@ -1,0 +1,10 @@
+{% macro toc_item(parent) %}
+	<li>
+		<a href="{{ parent.permalink | safe }}">{{ parent.title }}</a>
+		<ul>
+			{% for child in parent.children %}
+				{{ self::toc_item(parent=child) }}
+			{% endfor %}
+		</ul>
+	</li>
+{% endmacro %}

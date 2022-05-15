@@ -211,7 +211,9 @@ struct SoundHandle {
 
 impl SoundHandle {
   pub fn set_playback_state(&self, playback_state: PlaybackState) {
-    self.command_producer.push(SoundCommand::SetPlaybackState(playback_state));
+    self.command_producer.push(
+      SoundCommand::SetPlaybackState(playback_state),
+    );
   }
 
   pub fn set_volume(&self, volume: f32) {

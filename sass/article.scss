@@ -5,6 +5,12 @@ p, ul, ol {
     margin-bottom: var(--spacing-3);
 }
 
+ul, ol {
+    ul, ol {
+        margin-bottom: 0;
+    }
+}
+
 li {
     margin-left: var(--spacing-4);
 }
@@ -41,14 +47,14 @@ h4 {
     color: var(--mid-color);
 }
 
-aside, pre {
-    margin-left: -var(--spacing-2);
-    margin-right: -var(--spacing-2);
+aside, pre, .toc {
+    margin-left: calc(-1 * var(--spacing-2));
+    margin-right: calc(-1 * var(--spacing-2));
     margin-bottom: var(--spacing-3);
     padding: var(--spacing-2);
 }
 
-aside {
+aside, .toc {
     background: var(--bg-color-2);
 }
 
@@ -68,4 +74,13 @@ audio {
 figure {
     text-align: center;
     margin-bottom: var(--spacing-3);
+}
+
+.toc {
+    .toc-title {
+        margin-bottom: var(--spacing-2);
+        font-size: 1.25em;
+        font-weight: bold;
+        letter-spacing: -0.03em;
+    }
 }
