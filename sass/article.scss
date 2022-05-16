@@ -2,89 +2,89 @@
 @import url("syntax-theme-light.css") (prefers-color-scheme: light);
 
 p, ul, ol {
-    margin-bottom: var(--spacing-3);
+	margin-bottom: var(--spacing-3);
 }
 
 ul, ol {
-    ul, ol {
-        margin-bottom: 0;
-    }
+	ul, ol {
+		margin-bottom: 0;
+	}
 }
 
 li {
-    margin-left: var(--spacing-4);
+	margin-left: var(--spacing-4);
 }
 
 ul li {
-    list-style-type: initial;
+	list-style-type: initial;
 }
 
 ol li {
-    list-style-type: decimal;
+	list-style-type: decimal;
 }
 
 h1 {
-    margin-top: var(--spacing-4);
-    margin-bottom: var(--spacing-2);
-    line-height: 1.1;
+	margin-top: var(--spacing-4);
+	margin-bottom: var(--spacing-2);
+	line-height: 1.1;
 }
 
 h2 {
-    margin-top: var(--spacing-5);
-    margin-bottom: var(--spacing-3);
+	margin-top: var(--spacing-5);
+	margin-bottom: var(--spacing-3);
 }
 
 h3 {
-    margin-top: var(--spacing-4);
-    margin-bottom: var(--spacing-2);
+	margin-top: var(--spacing-4);
+	margin-bottom: var(--spacing-2);
 }
 
 h4 {
-    margin-bottom: var(--spacing-2);
+	margin-bottom: var(--spacing-2);
 }
 
 .info {
-    color: var(--mid-color);
+	color: var(--mid-color);
 }
 
 aside, pre, .toc {
-    margin-left: calc(-1 * var(--spacing-2));
-    margin-right: calc(-1 * var(--spacing-2));
-    margin-bottom: var(--spacing-3);
-    padding: var(--spacing-2);
+	margin-left: calc(-1 * var(--spacing-2));
+	margin-right: calc(-1 * var(--spacing-2));
+	margin-bottom: var(--spacing-3);
+	padding: var(--spacing-2);
 }
 
 aside, .toc {
-    background: var(--bg-color-2);
+	background: var(--bg-color-2);
 }
 
 aside p:last-of-type {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 pre {
-    font-size: 0.9em;
-    overflow-x: auto;
+	font-size: 0.9em;
+	overflow-x: auto;
 }
 
 pre, code {
-    font-family: 'IBM Plex Mono', monospace;
+	font-family: 'IBM Plex Mono', monospace;
 }
 
 audio {
-    margin-bottom: -var(--spacing-2);
+	margin-bottom: -var(--spacing-2);
 }
 
 figure {
-    text-align: center;
-    margin-bottom: var(--spacing-3);
+	text-align: center;
+	margin-bottom: var(--spacing-3);
 }
 
 .toc {
-    .toc-title {
-        margin-bottom: var(--spacing-2);
-        font-size: 1.25em;
-        font-weight: bold;
-        letter-spacing: -0.03em;
-    }
+	.toc-title {
+		margin-bottom: var(--spacing-2);
+		font-size: 1.25em;
+		font-weight: bold;
+		letter-spacing: -0.03em;
+	}
 }
