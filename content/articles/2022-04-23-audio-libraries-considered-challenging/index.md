@@ -8,9 +8,12 @@ I develop a game audio library called
 figured out. If you decide to make an audio library for some reason, learn from
 my experimentation!
 
-<aside>
-Note: this article uses Rust terminology and code snippets, since that's what Kira is written in, but the same principles will apply in C and C++.
-</aside>
+{% aside() %}
+
+Note: this article uses Rust terminology and code snippets, since that's what
+Kira is written in, but the same principles will apply in C and C++.
+
+{% end %}
 
 ## Why Audio is Hard
 
@@ -59,11 +62,13 @@ request. Usually it'll do it quickly, but if the system is taxed, the OS might
 deprioritize the audio thread, leading to a long period where you can't process
 any audio.
 
-<aside>
-This isn't something I know from experience. By its nature, this is a problem that
-doesn't come up very frequently. I'm taking the word of other people who do audio
-programming.
-</aside>
+{% aside() %}
+
+This isn't something I know from experience. By its nature, this is a problem
+that doesn't come up very frequently. I'm taking the word of other people who do
+audio programming.
+
+{% end %}
 
 Keeping these two constraints in mind, let's look at some problems that come up
 when creating a game audio library.
@@ -132,6 +137,24 @@ Of course, the audio thread also has to lock the data before it can access it.
 Waiting for other threads to unlock the data does, in fact, block the audio
 thread, which is one of the things we definitely shouldn't do. So `Mutex`es are
 out.
+
+{% aside() %}
+
+After proofreading this article, someone brought to my attention that I can use
+`try_lock` to avoid blocking the audio thread. Rather than wrapping the whole
+`Sound` in a `Mutex`, I could wrap just the parts I need to control from the
+gameplay thread. For example, I could have a `volume_change` field that's shared
+between the `Sound` and the `SoundHandle`. When the audio thread checks for
+volume changes, if the field is locked, it could just skip the check and try
+again later.
+
+I haven't tried this solution, so I don't know if it would work well.
+
+The same proofreader also found a crate called
+[`trailing_cell`](https://crates.io/crates/trailing_cell) which might be useful
+for cross-thread information updates.
+
+{% end %}
 
 ### Shared ownership via atomics
 
@@ -320,6 +343,16 @@ while let Some(command) = command_consumer.pop() {
 This works! It's reasonably efficient, and we can send arbitrarily complex
 commands to the audio thread without blocking anything.
 
+{% aside() %}
+
+Kira actually uses a hybrid approach: for resources where all the possible
+commands are known ahead-of-time, those commands are put in a `Command` enum and
+sent through one ringbuffer. Because `Sound`s and `Effect`s are traits that the
+user can implement, each sound and effect will use its own ringbuffer and its
+own `Command` enum.
+
+{% end %}
+
 There's only one problem: where does the `SoundId` come from?
 
 ## Storing Resources on the Audio Thread
@@ -337,8 +370,9 @@ The arena data structure is a natural fit. An arena is essentially a `Vec` of
 slots that can be occupied or empty. When we insert an item into the arena, the
 arena picks an empty slot to insert the item into and returns a key that
 contains the index of that slot. Accessing individual items is as fast as
-indexing into a `Vec`. Iterating over items is slow if you do it the naive way,
-but you can use a linked list to make iteration much faster.
+indexing into a `Vec`. Iterating over items is slow if you loop through every
+slot and filter out the empty ones, but you can use a linked list to make
+iteration much faster.
 
 So this will be the flow of sending resources to the audio thread:
 
@@ -453,9 +487,13 @@ don't exceed 50% of the capacity. So we could just allocate twice as much space
 as we need to avoid the problem. Kira v0.5 uses this approach, but I didn't feel
 comfortable relying on an unspoken implementation detail of a library.
 
-<aside>
-To be clear, I don't fault anybody for implementing a hash map in a way that results in the capacity decreasing. In almost all cases, allocating memory is perfectly fine. Just not this one!
-</aside>
+{% aside() %}
+
+To be clear, I don't fault anybody for implementing a hash map in a way that
+results in the capacity decreasing. In almost all cases, allocating more memory
+to compensate is perfectly fine. Just not this one!
+
+{% end %}
 
 ### Solution 3: Revisiting arenas
 
@@ -489,4 +527,5 @@ the arena [here](https://crates.io/crates/atomic-arena).
 
 ## Conclusion
 
-Making audio libraries is hard.
+Making audio libraries is hard. I don't know the best way to do it. This is just
+what I've tried and how it went for me.
