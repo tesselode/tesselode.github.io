@@ -34,6 +34,7 @@ html {
     font-size: unquote("min(20px, 4vw)");
     letter-spacing: -0.0225em;
     line-height: 1.5;
+    overflow-x: hidden;
 }
 
 .container {
