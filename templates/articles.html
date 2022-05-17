@@ -17,7 +17,12 @@
                         {{ page.title }}
                     </a>
                 </h3>
-                <p class="date">{{ page.date | date(format="%B %d, %Y") }}</p>
+                <p class="date">
+                    Published {{ page.date | date(format="%B %d, %Y") }}
+                    {% if page.extra.updated %}
+                        | Updated {{ page.extra.updated | date(format="%B %d, %Y") }}
+                    {% endif %}
+                </p>
             </li>
         {% endfor %}
     </ul>

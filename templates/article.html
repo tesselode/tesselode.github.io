@@ -14,6 +14,9 @@
     <h1>{{ page.title }}</h1>
     <p class="info">
         Published {{ page.date | date(format="%B %d, %Y") }}
+        {% if page.extra.updated %}
+            | Updated {{ page.extra.updated | date(format="%B %d, %Y") }}
+        {% endif %}
         <br>
         Reading time: {{ page.reading_time }} minute{{ page.reading_time | pluralize }}
     </p>

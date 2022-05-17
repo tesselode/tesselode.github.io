@@ -58,9 +58,12 @@ aside, .toc {
 	background: var(--bg-color-2);
 }
 
-aside p:last-of-type {
-	margin-bottom: 0;
+aside {
+	p:last-of-type, ul:last-of-type, ol:last-of-type {
+		margin-bottom: 0;
+	}
 }
+
 
 pre {
 	font-size: 0.9em;

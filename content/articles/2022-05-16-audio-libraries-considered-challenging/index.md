@@ -1,7 +1,20 @@
 +++
 title = "Audio Libraries Considered Challenging"
 date = 2022-05-16
+
+[extra]
+updated = 2022-05-17
 +++
+
+{% aside() %}
+
+Changelog:
+
+- May 17, 2022 - Added a link to a Ross Becina article, addressed some feedback
+  about hash map capacity
+- May 16, 2022 - Initial publication
+
+{% end %}
 
 I develop a game audio library called
 [Kira](https://github.com/tesselode/kira/). Here's some of the hard parts I've
@@ -67,6 +80,9 @@ any audio.
 This isn't something I know from experience. By its nature, this is a problem
 that doesn't come up very frequently. I'm taking the word of other people who do
 audio programming.
+
+These principles are covered in more detail in Ross Bencina's article
+["Real-time audio programming 101: time waits for nothing"](http://www.rossbencina.com/code/real-time-audio-programming-101-time-waits-for-nothing).
 
 {% end %}
 
@@ -492,6 +508,19 @@ comfortable relying on an unspoken implementation detail of a library.
 To be clear, I don't fault anybody for implementing a hash map in a way that
 results in the capacity decreasing. In almost all cases, allocating more memory
 to compensate is perfectly fine. Just not this one!
+
+{% end %}
+
+{% aside() %}
+
+**Update 5/17/22:**
+
+I have been informed that the capacity of the hash map does not actually
+decrease, which is why the capacity goes back up to 28 as I add more values. If
+this is true, and there's no situation where the hash map would actually lose
+capacity, then it's more usable for audio than I previously thought. (I don't
+know enough about the hashbrown algorithm to verify whether this is true.) That
+being said, I still like the next solution I came up with better.
 
 {% end %}
 
