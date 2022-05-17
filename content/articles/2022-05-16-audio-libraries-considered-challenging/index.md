@@ -1,6 +1,6 @@
 +++
 title = "Audio Libraries Considered Challenging"
-date = 2022-04-23
+date = 2022-05-16
 +++
 
 I develop a game audio library called
