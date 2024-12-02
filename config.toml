@@ -7,6 +7,8 @@ compile_sass = true
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
 
+taxonomies = [{ name = "tags", render = false }]
+
 [markdown]
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
@@ -22,5 +24,6 @@ social_links = [
 	{ name = "itch.io", url = "https://tesselode.itch.io/", icon = "fab fa-itch-io" },
 	{ name = "Bandcamp", url = "https://tesselode.bandcamp.com/", icon = "fab fa-bandcamp" },
 	{ name = "GitHub", url = "https://github.com/tesselode/", icon = "fab fa-github" },
-	{ name = "Twitter", url = "https://twitter.com/tesselode/", icon = "fab fa-twitter" },
+	{ name = "Bluesky", url = "https://bsky.app/profile/tesselode.bsky.social", icon = "fa-brands fa-bluesky" },
+	{ name = "YouTube", url = "https://www.youtube.com/@tesselode", icon = "fa-brands fa-youtube" },
 ]
