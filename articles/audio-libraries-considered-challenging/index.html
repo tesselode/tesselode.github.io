@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Audio Libraries Considered Challenging | Tesselode Labs </title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/base.css">
+	<script src="https://kit.fontawesome.com/b65fab4862.js" crossorigin="anonymous"></script>
+	
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="/article.css">
+
+</head>
+<body>
+	<a href="#main-content" id="skip-to-main-content-link">
+		Skip to main content
+	</a>
+	<header>
+		<a href="/" id="site-title">Tesselode Labs</a>
+		<div class="social-links">
+			
+				<a href="https:&#x2F;&#x2F;tesselode.itch.io&#x2F;" target="_blank" class="special-link">
+					<i class="fab fa-itch-io"></i>
+				</a>
+			
+				<a href="https:&#x2F;&#x2F;tesselode.bandcamp.com&#x2F;" target="_blank" class="special-link">
+					<i class="fab fa-bandcamp"></i>
+				</a>
+			
+				<a href="https:&#x2F;&#x2F;github.com&#x2F;tesselode&#x2F;" target="_blank" class="special-link">
+					<i class="fab fa-github"></i>
+				</a>
+			
+				<a href="https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;tesselode.bsky.social" target="_blank" class="special-link">
+					<i class="fa-brands fa-bluesky"></i>
+				</a>
+			
+				<a href="https:&#x2F;&#x2F;www.youtube.com&#x2F;@tesselode" target="_blank" class="special-link">
+					<i class="fa-brands fa-youtube"></i>
+				</a>
+			
+		</div>
+	</header>
+	<div class="container">
+		<nav>
+			<ul>
+				<li>
+					
+						<a href="/">Projects</a>
+					
+				</li>
+				<li>
+					
+						<a href="/articles">Articles</a>
+					
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<span id="main-content"></span>
+	
+<div class="container">
+    <h1>Audio Libraries Considered Challenging</h1>
+    <p class="info">
+        Published May 16, 2022
+        
+            | Updated May 17, 2022
+        
+        <br>
+        Reading time: 14 minutes
+    </p>
+
+    
+        <div class="toc">
+            <p class="toc-title">Table of Contents</p>
+            <ul>
+                
+                    
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#why-audio-is-hard">Why Audio is Hard</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+                
+                    
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#communicating-between-threads">Communicating Between Threads</a>
+		<ul>
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#shared-ownership-via-mutexes">Shared ownership via Mutexes</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#shared-ownership-via-atomics">Shared ownership via atomics</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#use-more-ringbuffers">Use more ringbuffers</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+			
+		</ul>
+	</li>
+
+                
+                    
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#storing-resources-on-the-audio-thread">Storing Resources on the Audio Thread</a>
+		<ul>
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#solution-1-arenas">Solution 1: Arenas</a>
+		<ul>
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#why-it-takes-too-long">Why it takes too long</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+			
+		</ul>
+	</li>
+
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#solution-2-indexmap">Solution 2: IndexMap</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+			
+				
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#solution-3-revisiting-arenas">Solution 3: Revisiting arenas</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+			
+		</ul>
+	</li>
+
+                
+                    
+	<li>
+		<a href="https://tesselode.github.io/articles/audio-libraries-considered-challenging/#conclusion">Conclusion</a>
+		<ul>
+			
+		</ul>
+	</li>
+
+                
+            </ul>
+        </div>
+    
+
+    <aside>
+	<p>Changelog:</p>
+<ul>
+<li>May 17, 2022 - Added a link to a Ross Becina article, addressed some feedback
+about hash map capacity</li>
+<li>May 16, 2022 - Initial publication</li>
+</ul>
+
+</aside>
+<p>I develop a game audio library called
+<a href="https://github.com/tesselode/kira/">Kira</a>. Here's some of the hard parts I've
+figured out. If you decide to make an audio library for some reason, learn from
+my experimentation!</p>
+<aside>
+	<p>Note: this article uses Rust terminology and code snippets, since that's what
+Kira is written in, but the same principles will apply in C and C++.</p>
+
+</aside>
+<h2 id="why-audio-is-hard">Why Audio is Hard</h2>
+<p>When it comes to graphics, different games have different acceptable framerates.
+Most people would consider 60 FPS to look "smooth". But even if the framerate
+dips a little bit below 60 FPS, it's not the end of the world. The game will
+keep displaying the previously rendered frame until the next one is ready. If
+it's a small enough frame drop, the player might not even notice.</p>
+<p>But if your game can't produce audio as quickly as the operating system wants
+(this is called a buffer underrun), the operating system has no choice but to
+fill the gaps with silence. And the player <em>will</em> notice.</p>
+<figure>
+  <audio controls src="normal playback example.ogg"></audio>
+  <figcaption>
+    A short piece of music playing back normally
+  </figcaption>
+</figure>
+<figure>
+  <audio controls src="underrun example.ogg"></audio>
+  <figcaption>
+    A short piece of music playing back with underruns
+  </figcaption>
+</figure>
+<p>If you can't listen to the example audio, imagine that when a game had frame
+drops, the monitor would display a black screen for all the frames the game
+couldn't produce quickly enough. Audio stuttering is the equivalent of that.</p>
+<p>When writing audio code, you want to avoid underruns at all costs. This means
+<strong>you have to do your audio processing on a separate thread.</strong> If you tried to
+do audio processing on the same thread as your graphics and input, your audio
+would stutter when the graphics rendering becomes too demanding.</p>
+<p><strong>You also can't block the audio thread.</strong> If something could cause the audio
+thread to pause for an unknown amount of time, you shouldn't do it. If the audio
+thread pauses for too long, it won't be able to process audio fast enough,
+leading to buffer underruns.</p>
+<p>Notably, this means <strong>you can't allocate or deallocate memory on the audio
+thread</strong>. When you ask the operating system to allocate or deallocate memory,
+you have to pause the thread until the OS is ready to get around to your
+request. Usually it'll do it quickly, but if the system is taxed, the OS might
+deprioritize the audio thread, leading to a long period where you can't process
+any audio.</p>
+<aside>
+	<p>This isn't something I know from experience. By its nature, this is a problem
+that doesn't come up very frequently. I'm taking the word of other people who do
+audio programming.</p>
+<p>These principles are covered in more detail in Ross Bencina's article
+<a href="http://www.rossbencina.com/code/real-time-audio-programming-101-time-waits-for-nothing">"Real-time audio programming 101: time waits for nothing"</a>.</p>
+
+</aside>
+<p>Keeping these two constraints in mind, let's look at some problems that come up
+when creating a game audio library.</p>
+<h2 id="communicating-between-threads">Communicating Between Threads</h2>
+<p>A game audio library provides functions for playing and modifying audio that you
+can call from gameplay code. It'll look vaguely like this:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> <span class="z-storage z-modifier z-rust">mut</span> sound_handle <span class="z-keyword z-operator z-assignment z-rust">=</span> audio<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">play</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>sound.mp3<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-comment z-line z-documentation z-rust"><span class="z-punctuation z-definition z-comment z-rust">///</span> later...
+</span></span><span class="z-source z-rust">sound_handle<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">set_volume</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-float z-rust">0.</span><span class="z-constant z-numeric z-float z-rust">5</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></code></pre>
+<p>When we play a new sound, we need to load audio data from a file on the gameplay
+thread and send it to the audio thread. (We can't load the audio data on the
+audio thread because that takes too long and could lead to buffer underruns.) To
+send the audio data to the audio thread, we can use a ringbuffer, such as the
+<a href="https://crates.io/crates/ringbuf"><code>ringbuf</code></a> crate.</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> on the gameplay thread
+</span></span><span class="z-source z-rust">audio_producer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>audio_data</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> on the audio thread
+</span></span><span class="z-source z-rust"><span class="z-keyword z-control z-rust">while</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>audio_data</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> audio_consumer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">pop</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  <span class="z-support z-function z-rust">play_audio</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>audio_data</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></code></pre>
+<p>But how do we tell the audio thread to modify an existing sound (e.g. setting
+the volume of a sound that's already playing or setting the playback state of a
+sound)?</p>
+<h3 id="shared-ownership-via-mutexes">Shared ownership via <code>Mutex</code>es</h3>
+<p>We could allow the gameplay thread to control data on the audio thread directly
+by giving it shared ownership of the data via a <code>Mutex</code>.</p>
+<p>On the audio thread, we'll store the sound state as an <code>Arc&lt;Mutex&lt;Sound&gt;&gt;</code>. Our
+sound handle on the gameplay thread will have a clone of that
+<code>Arc&lt;Mutex&lt;Sound&gt;&gt;</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">SoundHandle</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">playback_state</span><span class="z-punctuation z-separator z-type z-rust">:</span> PlaybackState,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">sound</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Arc<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-generic z-rust">Mutex<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Sound<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>To access audio data on the gameplay thread, we just have to lock the <code>Mutex</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">SoundHandle</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">set_playback_state</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">playback_state</span><span class="z-punctuation z-separator z-rust">:</span> PlaybackState</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    sound<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">lock</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">unwrap</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>playback_state <span class="z-keyword z-operator z-assignment z-rust">=</span> playback_state<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">set_volume</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">volume</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-storage z-type z-rust">f32</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    sound<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">lock</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">unwrap</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span>volume <span class="z-keyword z-operator z-assignment z-rust">=</span> volume<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Of course, the audio thread also has to lock the data before it can access it.
+Waiting for other threads to unlock the data does, in fact, block the audio
+thread, which is one of the things we definitely shouldn't do. So <code>Mutex</code>es are
+out.</p>
+<aside>
+	<p>After proofreading this article, someone brought to my attention that I can use
+<code>try_lock</code> to avoid blocking the audio thread. Rather than wrapping the whole
+<code>Sound</code> in a <code>Mutex</code>, I could wrap just the parts I need to control from the
+gameplay thread. For example, I could have a <code>volume_change</code> field that's shared
+between the <code>Sound</code> and the <code>SoundHandle</code>. When the audio thread checks for
+volume changes, if the field is locked, it could just skip the check and try
+again later.</p>
+<p>I haven't tried this solution, so I don't know if it would work well.</p>
+<p>The same proofreader also found a crate called
+<a href="https://crates.io/crates/trailing_cell"><code>trailing_cell</code></a> which might be useful
+for cross-thread information updates.</p>
+
+</aside>
+<h3 id="shared-ownership-via-atomics">Shared ownership via atomics</h3>
+<p>There is a way we can share data among multiple threads without having to lock
+it: atomics. Atomics are special versions of primitive types that the CPU knows
+how to keep synchronized between threads.</p>
+<p>We can make each modifiable field of the sound atomic:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">Sound</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">playback_state</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Arc<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>AtomicU8<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">volume</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Arc<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>AtomicU32<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>The sound handle will get clones of each field:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">SoundHandle</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">playback_state</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Arc<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>AtomicU8<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">volume</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Arc<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>AtomicU32<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>And to set those fields from the gameplay thread:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">SoundHandle</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">set_playback_state</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">playback_state</span><span class="z-punctuation z-separator z-rust">:</span> PlaybackState</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>playback_state<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">store</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>playback_state <span class="z-keyword z-operator z-rust">as</span> <span class="z-storage z-type z-rust">u8</span><span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Ordering<span class="z-punctuation z-accessor z-rust">::</span></span>SeqCst</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">set_volume</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">volume</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-storage z-type z-rust">f32</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>volume<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">store</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>volume<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">to_bits</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Ordering<span class="z-punctuation z-accessor z-rust">::</span></span>SeqCst</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Using atomics won't block the audio thread, but it does have some limitations.
+The largest atomic is 64 bits. That's enough space for a volume level or a
+playback state, but what if we want to send a more complex command to the audio
+thread? For example, what if we want to smoothly adjust the volume of a sound
+over a period of time? Maybe even with a user-specified easing curve?</p>
+<p>If we represented all the needed information for that command as a struct, it
+would look something like this:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">VolumeChange</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">volume</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-storage z-type z-rust">f32</span>, <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 32 bits
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">duration</span><span class="z-punctuation z-separator z-type z-rust">:</span> Duration, <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 96 bits
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">easing</span><span class="z-punctuation z-separator z-type z-rust">:</span> Easing, <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 8 bits is probably enough
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>That's more than we can fit in one atomic. We could store the command in
+multiple atomics, but then we have to keep them synced up. If we limited the
+maximum duration, maybe we could store it in 16 bits. I'm sure this is a
+solvable problem, but the solution won't be very ergonomic. So what else can we
+do?</p>
+<h3 id="use-more-ringbuffers">Use more ringbuffers</h3>
+<p>Why not just send commands via a ringbuffer? We're already using them for
+sending audio data.</p>
+<p>We can describe all of the possible commands with an enum:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-enum z-rust"><span class="z-storage z-type z-enum z-rust">enum</span> <span class="z-entity z-name z-enum z-rust">SoundCommand</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-enum z-rust"><span class="z-meta z-block z-rust">  SetPlaybackState<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>PlaybackState</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-enum z-rust"><span class="z-meta z-block z-rust">  SetVolume<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-storage z-type z-rust">f32</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-enum z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>The sound handle will own a command producer that it can push to:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">SoundHandle</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">command_producer</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Producer<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>SoundCommand<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">SoundHandle</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">set_playback_state</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">playback_state</span><span class="z-punctuation z-separator z-rust">:</span> PlaybackState</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>command_producer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>
+</span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-group z-rust">      <span class="z-meta z-path z-rust">SoundCommand<span class="z-punctuation z-accessor z-rust">::</span></span>SetPlaybackState<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>playback_state</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-group z-rust">    </span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">set_volume</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">volume</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-storage z-type z-rust">f32</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>command_producer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">SoundCommand<span class="z-punctuation z-accessor z-rust">::</span></span>SetVolume<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>volume</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>And the audio thread will own a command consumer that it can pop from:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">Sound</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">playback_rate</span><span class="z-punctuation z-separator z-type z-rust">:</span> PlaybackRate,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">volume</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-storage z-type z-rust">f32</span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">command_consumer</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Consumer<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>SoundCommand<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">Sound</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> called periodically
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">  <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">update</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    <span class="z-keyword z-control z-rust">while</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>command</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>command_consumer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">pop</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      <span class="z-keyword z-control z-rust">match</span> command <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">        <span class="z-meta z-path z-rust">SoundCommand<span class="z-punctuation z-accessor z-rust">::</span></span>SetPlaybackRate<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>playback_rate</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">          <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>playback_rate <span class="z-keyword z-operator z-assignment z-rust">=</span> playback_rate<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">        <span class="z-meta z-path z-rust">SoundCommand<span class="z-punctuation z-accessor z-rust">::</span></span>SetVolume<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>volume</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">          <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>volume <span class="z-keyword z-operator z-assignment z-rust">=</span> volume<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>There is a downside to this approach: every sound has to periodically poll for
+new commands. Most sounds will not be changed at any one time, so it seems
+wasteful that they all have to poll for commands. (And in my unscientific
+benchmarking, all of the polling does make a noticeable difference in
+performance.)</p>
+<p>Maybe we can just use one ringbuffer to collect the commands for every sound? We
+already have a ringbuffer for sending audio data, so let's just expand that to
+send a command enum:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust">Command <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  PlaySound<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>AudioData</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  SetSoundPlaybackRate<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>PlaybackRate</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  SetSoundVolume<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-storage z-type z-rust">f32</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></code></pre>
+<p>Of course, we need a way to tell the audio thread which sound we want to change,
+so let's add some unique identifiers to those commands.</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust">Command <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  PlaySound<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>AudioData</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  SetSoundPlaybackRate<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>SoundId<span class="z-punctuation z-separator z-rust">,</span> PlaybackRate</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  SetSoundVolume<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>SoundId<span class="z-punctuation z-separator z-rust">,</span> <span class="z-storage z-type z-rust">f32</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></code></pre>
+<p>Every sound handle will need the ID of the sound it's meant to control. Also,
+every sound handle will need to push commands to the same command producer, so
+we'll need to wrap it in a <code>Mutex</code>:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">SoundHandle</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">sound_id</span><span class="z-punctuation z-separator z-type z-rust">:</span> SoundId,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust">  <span class="z-variable z-other z-member z-rust">command_producer</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust">Arc<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-generic z-rust">Mutex<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-generic z-rust">Producer<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Command<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Unlike the last time we tried using <code>Mutex</code>es, this <code>Mutex</code> is only shared on
+the gameplay thread, so there's no risk of blocking the audio thread.</p>
+<p>On the audio thread, we'll have some code along these lines:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-control z-rust">while</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>command</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> command_consumer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">pop</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust">  <span class="z-keyword z-control z-rust">match</span> command <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">Command<span class="z-punctuation z-accessor z-rust">::</span></span>PlaySound<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>audio_data</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-support z-function z-rust">play_sound</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>audio_data</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">Command<span class="z-punctuation z-accessor z-rust">::</span></span>SetSoundPlaybackState<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>sound_id<span class="z-punctuation z-separator z-rust">,</span> playback_state</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      <span class="z-keyword z-control z-rust">if</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>sound</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-function z-rust">get_sound_by_id</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>sound_id</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">        sound<span class="z-punctuation z-accessor z-dot z-rust">.</span>playback_state <span class="z-keyword z-operator z-assignment z-rust">=</span> playback_state<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-path z-rust">Command<span class="z-punctuation z-accessor z-rust">::</span></span>SetSoundVolume<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>sound_id<span class="z-punctuation z-separator z-rust">,</span> volume</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      <span class="z-keyword z-control z-rust">if</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>sound</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-function z-rust">get_sound_by_id</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>sound_id</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">        sound<span class="z-punctuation z-accessor z-dot z-rust">.</span>volume <span class="z-keyword z-operator z-assignment z-rust">=</span> volume<span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></code></pre>
+<p>This works! It's reasonably efficient, and we can send arbitrarily complex
+commands to the audio thread without blocking anything.</p>
+<aside>
+	<p>Kira actually uses a hybrid approach: for resources where all the possible
+commands are known ahead-of-time, those commands are put in a <code>Command</code> enum and
+sent through one ringbuffer. Because <code>Sound</code>s and <code>Effect</code>s are traits that the
+user can implement, each sound and effect will use its own ringbuffer and its
+own <code>Command</code> enum.</p>
+
+</aside>
+<p>There's only one problem: where does the <code>SoundId</code> come from?</p>
+<h2 id="storing-resources-on-the-audio-thread">Storing Resources on the Audio Thread</h2>
+<p>We need to store resources (sounds, mixer tracks, etc.) on the audio thread in a
+way that provides:</p>
+<ul>
+<li>Fast iteration</li>
+<li>Fast random access to resources via an ID that the gameplay thread also has
+access to</li>
+</ul>
+<h3 id="solution-1-arenas">Solution 1: Arenas</h3>
+<p>The arena data structure is a natural fit. An arena is essentially a <code>Vec</code> of
+slots that can be occupied or empty. When we insert an item into the arena, the
+arena picks an empty slot to insert the item into and returns a key that
+contains the index of that slot. Accessing individual items is as fast as
+indexing into a <code>Vec</code>. Iterating over items is slow if you loop through every
+slot and filter out the empty ones, but you can use a linked list to make
+iteration much faster.</p>
+<p>So this will be the flow of sending resources to the audio thread:</p>
+<ol>
+<li>The user calls a function in the library to send a resource to the audio
+thread</li>
+<li>The library sends a command to the audio thread with the resource to add and
+waits for the audio thread to send back the key</li>
+<li>Next time the audio thread starts processing, it receives the command to add
+the resource, adds it to the arena, and sends back the key through a separate
+ringbuffer</li>
+<li>Next time the gameplay thread checks for the key, it receives it and returns
+it to the user</li>
+</ol>
+<p>So we'll have to wait a bit for the audio thread to return the key, but it
+shouldn't take too long, right?</p>
+<p>...right?</p>
+<h4 id="why-it-takes-too-long">Why it takes too long</h4>
+<p>When you hear audio coming from speakers, you're hearing an analog
+representation of digital samples that are evenly distributed over time. But an
+application does not produce those digital samples at a constant rate. If it
+did, then if any of the samples took too long to calculate, the application
+would fall behind and wouldn't be able to produce audio fast enough, leading to
+underruns. Instead, the operating system periodically asks the application to
+produce a batch of samples at a time.</p>
+<p>Let's say the operating system wants to output audio at 48,000 Hz (or samples
+per second), and it requests 512 samples at a time. The audio thread will
+produce 512 samples of audio, then sleep until the operating system wakes it up
+for the next batch of samples. The operating system might not need to wake it up
+for another 10 milliseconds, since that's the amount of audio it has queued up.</p>
+<p>If the gameplay thread sends a command to play a sound right after the audio
+thread falls asleep, the audio thread won't receive it and send back the sound
+ID until 10ms later. To put that into perspective, in a 60 FPS game, 10ms is
+more than half a frame. So if we played two sounds in a row, blocking the
+gameplay thread each time to wait for the audio thread to send back a sound ID,
+we could end up with a frame drop. That's not acceptable performance for an
+audio library.</p>
+<p>So arenas are out.</p>
+<h3 id="solution-2-indexmap">Solution 2: <code>IndexMap</code></h3>
+<p>If we store resources in a hash map, we can create keys on the gameplay thread
+and just send them to the audio thread along with the command to add a resource.
+The standard library's <code>HashMap</code> isn't very quick to iterate over, but the
+<a href="https://crates.io/crates/indexmap"><code>indexmap</code></a> crate solves that problem for
+us.</p>
+<p>Here's the new flow:</p>
+<ol>
+<li>The user calls a function in the library to send a resource to the audio
+thread</li>
+<li>The library increments an ID internally to use as the key for the resource</li>
+<li>The library sends a command to the audio thread to add the resource with the
+ID</li>
+<li>The library immediately returns the ID to the caller</li>
+</ol>
+<p>Problem solved! We don't have to wait for the audio thread to send back an ID.</p>
+<p>There are some downsides to this approach, though:</p>
+<ul>
+<li>Hash maps are slower to get items from than arenas, because they have to hash
+the key to get the location of the item in memory</li>
+<li><code>IndexMap</code>s lose capacity over time...wait, what?</li>
+</ul>
+<p>If you're like me, you'd be surprised to learn the latter fact. But I'll prove
+it to you!</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">indexmap<span class="z-punctuation z-accessor z-rust">::</span></span>IndexMap<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  <span class="z-storage z-type z-rust">let</span> <span class="z-storage z-modifier z-rust">mut</span> map <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">IndexMap<span class="z-punctuation z-accessor z-rust">::</span></span>with_capacity<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">10</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">  <span class="z-keyword z-control z-rust">for</span> i <span class="z-keyword z-operator z-rust">in</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">0</span><span class="z-keyword z-operator z-range z-rust">..</span><span class="z-constant z-numeric z-integer z-decimal z-rust">1000</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    map<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">insert</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>i<span class="z-punctuation z-separator z-rust">,</span> i</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span><span class="z-constant z-other z-placeholder z-rust">{}</span> / <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span> map<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">len</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span> map<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">capacity</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    <span class="z-keyword z-control z-rust">if</span> i <span class="z-keyword z-operator z-arithmetic z-rust">%</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">5</span> <span class="z-keyword z-operator z-comparison z-rust">==</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">0</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      map<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">swap_remove_index</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>i <span class="z-keyword z-operator z-arithmetic z-rust">/</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">2</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      map<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">swap_remove_index</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>i <span class="z-keyword z-operator z-arithmetic z-rust">/</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">3</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">      map<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">swap_remove_index</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>i <span class="z-keyword z-operator z-arithmetic z-rust">/</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">4</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-block z-rust">  </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Here's a small example where I add items to an <code>IndexMap</code>. Every 5 items added,
+I remove 3 items at arbitrary indices. Every time I add an item, I print the
+length and total capacity of the map. You can run this code snippet yourself
+<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=a163cd12ab67bf774d0a9adef9187419">here</a>.</p>
+<p>We end up with a result something like this:</p>
+<pre class="z-code"><code><span class="z-text z-plain">28 / 28
+</span><span class="z-text z-plain">26 / 26 // capacity decreases
+</span><span class="z-text z-plain">27 / 27
+</span><span class="z-text z-plain">28 / 28
+</span><span class="z-text z-plain">29 / 56
+</span><span class="z-text z-plain">30 / 56
+</span></code></pre>
+<p>Notice the dip from a capacity of 28 to a capacity of 26? This isn't a bug,
+<a href="https://github.com/bluss/indexmap/issues/183">it's just how the hashbrown algorithm works</a>
+(which both <code>IndexMap</code> and the standard library's <code>HashMap</code> use).</p>
+<p>It turns out there is a workaround: the capacity will never decrease if you
+don't exceed 50% of the capacity. So we could just allocate twice as much space
+as we need to avoid the problem. Kira v0.5 uses this approach, but I didn't feel
+comfortable relying on an unspoken implementation detail of a library.</p>
+<aside>
+	<p>To be clear, I don't fault anybody for implementing a hash map in a way that
+results in the capacity decreasing. In almost all cases, allocating more memory
+to compensate is perfectly fine. Just not this one!</p>
+
+</aside>
+<aside>
+	<p><strong>Update 5/17/22:</strong></p>
+<p>I have been informed that the capacity of the hash map does not actually
+decrease, which is why the capacity goes back up to 28 as I add more values. If
+this is true, and there's no situation where the hash map would actually lose
+capacity, then it's more usable for audio than I previously thought. (I don't
+know enough about the hashbrown algorithm to verify whether this is true.) That
+being said, I still like the next solution I came up with better.</p>
+
+</aside>
+<h3 id="solution-3-revisiting-arenas">Solution 3: Revisiting arenas</h3>
+<p>Maybe an arena can work; it would just need to let us generate new keys from the
+gameplay thread. A suggestion from the Rust Audio discord got me thinking about
+how atomics could be used to serve this purpose. I eventually came up with an
+arena that has two components:</p>
+<ul>
+<li>The arena itself, which holds the resource data and lives on the audio thread</li>
+<li>An arena controller, which tracks free and empty slots and can generate keys.
+The controller can be cloned and sent to other threads.</li>
+</ul>
+<p>When we want to add an item to an arena, we first reserve a key from the arena
+controller. If too many keys have been reserved, the controller will tell us the
+arena is full and not give us a key. If there are slots available, we can send
+the key along with the command to add an item and return the key immediately to
+the caller.</p>
+<p>I find this to be a really elegant solution, since it solves multiple problems
+at once:</p>
+<ul>
+<li>The backing data store is a <code>Vec</code>, so there won't be any surprises with the
+capacity</li>
+<li>Looking up resources is fast, since the keys are just indices into the <code>Vec</code></li>
+<li>We can generate new keys direcly from the gameplay thread</li>
+<li>It's easy to get information on the number of allocated resources and
+remaining capacity from the gameplay thread</li>
+</ul>
+<p>This is the solution I'm using for Kira v0.6. You can see my implementation of
+the arena <a href="https://crates.io/crates/atomic-arena">here</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Making audio libraries is hard. I don't know the best way to do it. This is just
+what I've tried and how it went for me.</p>
+
+</div>
+
+</body>
+</html>
