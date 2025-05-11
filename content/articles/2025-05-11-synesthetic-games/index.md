@@ -31,49 +31,118 @@ In a first-person shooter, you may hold the trigger on your controller and hear 
 
 ### Rhythm games
 
-Rhythm games aren't _necessarily_ synesthetic (although they can be, as we'll see below). Just because you're pressing inputs in time with music doesn't mean the audio and visuals are responding in kind to create a feeling.
+Synesthetic games aren't necessarily rhythm games, and rhythm games aren't necessarily synesthetic (although they can be, as we'll see below). Just because you're pressing inputs in time with music doesn't mean the audio and visuals are responding in kind to create a feeling.
+
+### Games that procedurally generate levels from user-provided audio
+
+(e.g. Audiosurf, Beat Hazard, etc.)
+
+In my experience, these games just aren't able to match the music that well, and thus can't create a strong connection between music, visuals, and gameplay. I believe this kind of experience needs to be hand-crafted.
 
 ## Common techniques used
 
 ### Dynamic music
 
-- Vertical
+Dynamic music is music that changes seamlessly in response to different gameplay scenarios. There's two ways music can be dynamic:
 
-- Horizontal
+- **Vertical** - the layering of sounds changes in response to gameplay. For instance, a song might crossfade into a more subdued instrumentation when a player enters water, or a percussion layer might fade in when a player starts a battle.
+- **Horizontal** - the way a piece flows over time changes in response to gameplay. For instance, a game might use a carefully timed transition to move from one composition to another in response to the player entering a cutscene.
+
+One track can have both vertical and horizontal dynamic elements.
+
+The thing that differentiates dynamic music from standard video game music is that the music proceeds uninterrupted while adapting to the player's actions. If you listened to the resulting audio in isolation, you might think it was composed that way in the first place.
 
 ### Musical sound effects
 
-- Quantized vs. unquantized
+Synesthetic games often use sound effects that act as an ingredient of the background music. These sounds may or may not be **quantized**.
 
-### Abstract visuals
+- When a sound is not quantized, it plays immediately when an event triggers it, like in most video games. This means the player gets instant feedback that something happened. However, the sound may not rhythmically mesh with the background music.
+- If the sound is quantized, once an event happens, the resulting sound is delayed until a rhythmically opportune moment in the background music. This makes the sound blend in better with the music, but depending on how long the sound is delayed, it may feel disjointed from the action that caused it.
+
+### Dancing visuals
+
+Having the visuals "dance" to the beat of the music is a great way of expressing the music through visuals. This can be as simple as having some visual elements hop up and down or pulse on every beat, or it can be something more complicated like a spectrum visualizer, like the kind you would see in music players.
+
+### Music-synced level design
+
+The game's levels can have elements that are synced to the music. For instance, enemies could spawn in time with the music, or a platform could move in sync with a musical element. This isn't necessary by any means, but it can help a game feel more connected to its music.
+
+### Abstract audio and/or visuals
+
+Creating a sense of synesthesia necessitates some amount of stylization and abstraction in the art. If your sounds and visuals are realistic, then they're just portraying a world, not connecting with each other in unique ways.
 
 ## Examples
 
 ### Tetsuya Mizuguchi
 
+Let's start with games that Tetsuya Mizuguchi, the pioneer of synesthetic games, has been involved in.
+
 #### Rez
+
+Techniques used:
+- Vertical dynamic music
+- Horizontal dynamic music
+- Musical sound effects (quantized)
+- Dancing visuals
+
+This is THE synesthetic game that I compare all other synesthetic games to.
 
 #### Child of Eden
 
 #### Area X
 
+Techniques used:
+- Vertical dynamic music (?)
+- Horizontal dynamic music
+- Musical sound effects (quantized)
+- Dancing visuals
+
 #### Lumines series
+
+Techniques used:
+- Horizontal dynamic music
+- Musical sound effects (unquantized)
+- Dancing visuals
 
 #### Meteos
 
+Techniques used:
+- Musical sound effects (unquantized)
+
 #### Tetris Effect
+
+Techniques used:
+- Vertical dynamic music
+- Horizontal dynamic music
+- Musical sound effects (quantized)
+- Dancing visuals
 
 ### Other
 
 #### 140
 
+Techniques used:
+- Vertical dynamic music
+- Music-synced level design
+- Dancing visuals
+
 #### Akka Arrh
+
+Techniques used:
+- Musical sound effects (unquantized)
 
 #### APE OUT
 
 #### Every Extend Extra
 
+#### Hi-Fi Rush
+
+#### Just Shapes & Beats
+
 #### Mini Metro / Mini Motorways
+
+Techniques used:
+- Completely dynamic music
 
 #### Mixolumia
 
@@ -81,10 +150,25 @@ Rhythm games aren't _necessarily_ synesthetic (although they can be, as we'll se
 
 #### Sayonara Wild Hearts
 
+Techniques used:
+- Music-synced level design
+- Musical sound effects (unquantized)
+
 #### Soft Body
+
+Techniques used:
+- Musical sound effects (unquantized)
 
 #### Space Invaders Extreme
 
+Techniques used:
+- Vertical dynamic music
+- Horizontal dynamic music
+- Musical sound effects (quantized)
+
 #### Thumper
+
+Techniques used:
+- Musical sound effects (quantized)
 
 #### TranscendPang
