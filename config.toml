@@ -24,6 +24,5 @@ social_links = [
 	{ name = "itch.io", url = "https://tesselode.itch.io/", icon = "fab fa-itch-io" },
 	{ name = "Bandcamp", url = "https://tesselode.bandcamp.com/", icon = "fab fa-bandcamp" },
 	{ name = "GitHub", url = "https://github.com/tesselode/", icon = "fab fa-github" },
-	{ name = "Bluesky", url = "https://bsky.app/profile/tesselode.bsky.social", icon = "fa-brands fa-bluesky" },
 	{ name = "YouTube", url = "https://www.youtube.com/@tesselode", icon = "fa-brands fa-youtube" },
 ]
